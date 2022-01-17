@@ -47,9 +47,13 @@ public class characterController : MonoBehaviour
     }
     public void shootFireball()
     {
-        if(Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift) && fireFlowerEquipped)
+        if(Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift) /*&& fireFlowerEquipped*/)
         {
             GameObject fireball = Instantiate(fireballProjectile, firePoint.position, Quaternion.identity);
+            if(!facingRight)
+            {
+                fireball.transform.Rotate(0f, 180f, 0f);
+            }
             Rigidbody2D fireballRb = fireball.GetComponent<Rigidbody2D>();
             fireballRb.AddForce(transform.right * 5, ForceMode2D.Impulse);
         }
