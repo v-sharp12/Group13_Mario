@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class fireball : MonoBehaviour
 {
+    public float lifeTime;
+    public float lifespan = 5f;
     public float speed;
     [HideInInspector] public Rigidbody2D rb;
-
     private float initalVelocity { get { return calculateInitialVelocity(); } }
-
-    // private float gravity;
-
     public void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        lifeTime = 0f;
     }
 
     public void Update()
@@ -21,13 +20,20 @@ public class fireball : MonoBehaviour
         Vector3 velocity = rb.velocity;
         velocity.x = transform.right.x * speed;
         rb.velocity = velocity;
+        liveLife();
     }
-
+    public void liveLife()
+    {
+        lifeTime = lifeTime + Time.deltaTime;
+        if(lifeTime>lifespan)
+        {
+            Destroy(this.gameObject);
+        }
+    }
     private float calculateInitialVelocity(float height = 1.5f, float velocityX = 1f, float airTime = 1f)
     {
         return (2 * height * velocityX) / airTime;
     }
-
     public void OnCollisionEnter2D(Collision2D col)
     {
         for (int i = 0; i < col.contactCount; i++)
