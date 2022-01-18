@@ -11,6 +11,7 @@ public class characterController : MonoBehaviour
     public Transform firePoint;
     public LayerMask groundLayer;
     public GameObject fireballProjectile;
+    public gameManager gameManager;
     
     [Header("Movement Variables")]
     public float moveSpeed;
@@ -25,6 +26,7 @@ public class characterController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        gameManager = GameObject.Find("GameManager").GetComponent<gameManager>();
         groundChecker = transform.Find("ground_checker");
         firePoint = transform.Find("firePoint");
         fireFlowerEquipped = false;
@@ -49,12 +51,14 @@ public class characterController : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift) /*&& fireFlowerEquipped*/)
         {
-            GameObject fireball = Instantiate(fireballProjectile, firePoint.position, Quaternion.identity);
+            GameObject projectile = Instantiate(fireballProjectile, firePoint.position, Quaternion.identity);
+            fireball fireball = projectile.GetComponent<fireball>();
+            fireball.player = GetComponent<characterController>();
             if(!facingRight)
             {
-                fireball.transform.Rotate(0f, 180f, 0f);
+                projectile.transform.Rotate(0f, 180f, 0f);
             }
-            Rigidbody2D fireballRb = fireball.GetComponent<Rigidbody2D>();
+            Rigidbody2D fireballRb = projectile.GetComponent<Rigidbody2D>();
             fireballRb.AddForce(transform.right * 5, ForceMode2D.Impulse);
         }
     }
@@ -70,7 +74,7 @@ public class characterController : MonoBehaviour
             isGrounded = false;
         }
     }
-        public void playerFlip() 
+    public void playerFlip() 
     {
         if (rb.velocity.x > 0 && !facingRight)
         {

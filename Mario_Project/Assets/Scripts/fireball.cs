@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class fireball : MonoBehaviour
 {
+    public characterController player;
+    public Rigidbody2D rb;    
     public float lifeTime;
     public float lifespan = 5f;
     public float speed;
-    [HideInInspector] public Rigidbody2D rb;
     private float initalVelocity { get { return calculateInitialVelocity(); } }
     public void Start()
     {
@@ -46,9 +47,15 @@ public class fireball : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D hit)
     {
-        if(hit.CompareTag("Ground") || hit.CompareTag("Enemy"))
+        if(hit.CompareTag("Ground"))
         {
             Destroy(this.gameObject);
+        }
+        if(hit.CompareTag("Enemy"))
+        {
+            Destroy(hit.gameObject);
+            Destroy(this.gameObject);
+            player.gameManager.addScore(100);
         }
     }
 }
