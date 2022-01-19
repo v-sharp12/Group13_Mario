@@ -5,14 +5,18 @@ using UnityEngine;
 public class fireball : MonoBehaviour
 {
     public characterController player;
-    public Rigidbody2D rb;    
+    public Rigidbody2D rb;  
+    public LayerMask enemyLayer;
+    public Transform firepoint;
+    [Header("Layers")]  
     public float lifeTime;
-    public float lifespan = 5f;
+    public float lifespan = 5f; // The lenght of time before destroying fireball.
     public float speed;
     private float initalVelocity { get { return calculateInitialVelocity(); } }
     public void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        firepoint = transform.Find("rayFire");
         lifeTime = 0f;
     }
 
@@ -22,6 +26,7 @@ public class fireball : MonoBehaviour
         velocity.x = transform.right.x * speed;
         rb.velocity = velocity;
         liveLife();
+        fireRay();
     }
     public void liveLife()
     {
@@ -45,9 +50,26 @@ public class fireball : MonoBehaviour
                 rb.velocity = velocity;
             }
     }
+    public void fireRay()
+    {
+        RaycastHit2D rayLeft = Physics2D.Raycast(firepoint.position, -transform.right, 1f, enemyLayer);
+        RaycastHit2D rayRight = Physics2D.Raycast(firepoint.position, transform.right, 1f, enemyLayer);
+        if(rayRight.collider != null)
+        {
+            Destroy(rayRight.collider.gameObject);
+            player.gameManager.addScore(100);
+            Destroy(this.gameObject);
+        }
+        else if(rayRight.collider != null)
+        {
+            Destroy(rayRight.collider.gameObject);
+            player.gameManager.addScore(100);
+            Destroy(this.gameObject);
+        }
+    }
     void OnTriggerEnter2D(Collider2D hit)
     {
-        if(hit.CompareTag("Ground"))
+        /*if(hit.CompareTag("Ground"))
         {
             Destroy(this.gameObject);
         }
@@ -56,6 +78,10 @@ public class fireball : MonoBehaviour
             Destroy(hit.gameObject);
             Destroy(this.gameObject);
             player.gameManager.addScore(100);
-        }
+        }*/
+    }
+    void OnDrawGizmosSelected()
+    {
+        Debug.DrawRay(firepoint.position, transform.right, Color.green, 1f);
     }
 }

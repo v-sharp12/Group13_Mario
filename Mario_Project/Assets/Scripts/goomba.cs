@@ -13,7 +13,7 @@ public class goomba : MonoBehaviour
     {
         
     }
-    void OnCollisionEnter2D(Collider2D col)
+    void OnCollisionEnter2D(Collision2D col)
     {
 
     }

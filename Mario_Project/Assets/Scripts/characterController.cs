@@ -62,6 +62,10 @@ public class characterController : MonoBehaviour
             fireballRb.AddForce(transform.right * 5, ForceMode2D.Impulse);
         }
     }
+    public void combat()
+    {
+        
+    }
     void isOnGround()
     {
         Collider2D collider = Physics2D.OverlapCircle(groundChecker.position, checkGroundRadius, groundLayer);
