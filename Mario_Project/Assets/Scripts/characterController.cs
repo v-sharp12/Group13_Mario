@@ -5,11 +5,14 @@ using UnityEngine;
 public class characterController : MonoBehaviour
 {
     [SerializeField] private float xinput;
+    [SerializeField] private float spaceInput;
     [Header("References")]
     Rigidbody2D rb;
     public Transform groundChecker;
     public Transform firePoint;
+    public Transform headPoint;
     public LayerMask groundLayer;
+    public LayerMask enemyLayer;
     public GameObject fireballProjectile;
     public gameManager gameManager;
     
@@ -29,6 +32,7 @@ public class characterController : MonoBehaviour
         gameManager = GameObject.Find("GameManager").GetComponent<gameManager>();
         groundChecker = transform.Find("ground_checker");
         firePoint = transform.Find("firePoint");
+        headPoint = transform.Find("headPoint");
         fireFlowerEquipped = false;
     }
     void Update()
@@ -38,13 +42,14 @@ public class characterController : MonoBehaviour
         shootFireball();
         isOnGround();
         playerFlip();
+        fireRay();
     }
     public void move()
     {
         rb.velocity = new Vector2(moveSpeed * xinput, rb.velocity.y);
         if(Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
-            rb.AddForce(transform.up * jumpPower);
+            rb.AddForce(transform.up * jumpPower, ForceMode2D.Impulse);
         }
     }
     public void shootFireball()
@@ -62,9 +67,21 @@ public class characterController : MonoBehaviour
             fireballRb.AddForce(transform.right * 5, ForceMode2D.Impulse);
         }
     }
-    public void combat()
+    public void fireRay()
     {
+        Collider2D collider = Physics2D.OverlapCircle(headPoint.position, checkGroundRadius, groundLayer);
+        if (collider != null)
+        {
+            rb.AddForce(-transform.up * (jumpPower), ForceMode2D.Impulse);
+        }
         
+        RaycastHit2D rayDown = Physics2D.BoxCast(groundChecker.position, new Vector2(.2f,.2f), 0f, -transform.up, .25f, enemyLayer);
+        if(rayDown.collider != null)
+        {
+            Destroy(rayDown.collider.gameObject);
+            gameManager.addScore(100);
+            rb.AddForce(transform.up * (jumpPower * 1.25f), ForceMode2D.Impulse);
+        }
     }
     void isOnGround()
     {
@@ -95,7 +112,10 @@ public class characterController : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(groundChecker.position, checkGroundRadius);
+        Gizmos.DrawWireSphere(headPoint.position, checkGroundRadius);
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(firePoint.position, new Vector3(.25f,.25f,.25f));
+        Gizmos.color = Color.red;
+        //Gizmos.DrawWireCube(groundChecker.position, new Vector3(.25f,.25f,.25f));
     }
 }
