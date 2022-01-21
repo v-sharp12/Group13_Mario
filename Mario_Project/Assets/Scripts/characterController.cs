@@ -13,6 +13,7 @@ public class characterController : MonoBehaviour
     public Transform headPoint;
     public LayerMask groundLayer;
     public LayerMask enemyLayer;
+    public LayerMask finishLayer;
     public GameObject fireballProjectile;
     public gameManager gameManager;
     
@@ -20,11 +21,14 @@ public class characterController : MonoBehaviour
     public float moveSpeed;
     public float jumpPower;
     public float checkGroundRadius;
+    public float currentSpeed;
     
     [Header("Movement Constraints")]
+    public bool canMove;
     public bool isFlipped;
     public bool isGrounded;
     public bool facingRight = true;
+    public bool movingRight;
     public bool fireFlowerEquipped;
     void Start()
     {
@@ -34,6 +38,8 @@ public class characterController : MonoBehaviour
         firePoint = transform.Find("firePoint");
         headPoint = transform.Find("headPoint");
         fireFlowerEquipped = false;
+        movingRight = false;
+        canMove = true;
     }
     void Update()
     {
@@ -43,13 +49,26 @@ public class characterController : MonoBehaviour
         isOnGround();
         playerFlip();
         fireRay();
+
+        currentSpeed = rb.velocity.x;
     }
     public void move()
     {
-        rb.velocity = new Vector2(moveSpeed * xinput, rb.velocity.y);
-        if(Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if(canMove)
         {
-            rb.AddForce(transform.up * jumpPower, ForceMode2D.Impulse);
+            rb.velocity = new Vector2(moveSpeed * xinput, rb.velocity.y);
+            if(Input.GetKeyDown(KeyCode.Space) && isGrounded)
+            {
+                rb.AddForce(transform.up * jumpPower, ForceMode2D.Impulse);
+            }
+            if(xinput > .01f && rb.velocity.x > 0.1f && facingRight)
+            {
+                movingRight = true;
+            }
+            else if (facingRight != true || rb.velocity.x <= 0.1f)
+            {
+                movingRight = false;
+            }            
         }
     }
     public void shootFireball()
@@ -72,7 +91,7 @@ public class characterController : MonoBehaviour
         Collider2D collider = Physics2D.OverlapCircle(headPoint.position, checkGroundRadius, groundLayer);
         if (collider != null)
         {
-            rb.AddForce(-transform.up * (jumpPower), ForceMode2D.Impulse);
+            rb.AddForce(-transform.up * (jumpPower/2), ForceMode2D.Impulse);
         }
         
         RaycastHit2D rayDown = Physics2D.BoxCast(groundChecker.position, new Vector2(.2f,.2f), 0f, -transform.up, .25f, enemyLayer);
