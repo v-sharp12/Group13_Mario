@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Ground
+  - FinishLine
   layers:
   - Default
   - TransparentFX
@@ -16,9 +17,9 @@ TagManager:
   - Enemy
   - Transition
   - Player
-  - 
-  - 
-  - 
+  - Camera Bounds
+  - Item Block
+  - Brick
   - 
   - 
   - 

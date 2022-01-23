@@ -76,7 +76,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   m_Color: {r: 1, g: 0.8647324, b: 0, a: 1}
   m_FlipX: 0
@@ -103,7 +103,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0
-  m_GravityScale: 1.75
+  m_GravityScale: 2.75
   m_Material: {fileID: 0}
   m_Interpolate: 1
   m_SleepingMode: 1
@@ -149,22 +149,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xinput: 0
   spaceInput: 0
+  rb: {fileID: 0}
+  fireballProjectile: {fileID: 2360531974601085490, guid: 6e803a9e8a4b2e74888a674cc3dcd4cd, type: 3}
+  gameManager: {fileID: 0}
   groundChecker: {fileID: 7174627695899876170}
   firePoint: {fileID: 7174627694278894949}
   headPoint: {fileID: 8595926248752790358}
+  jumpSound: {fileID: 8300000, guid: 1d979ac90d2fdeb45911677ec847a89f, type: 3}
+  coinSound: {fileID: 8300000, guid: 5026c74c623895944a2bf811814834f8, type: 3}
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
+  brickLayer:
+    serializedVersion: 2
+    m_Bits: 2048
+  itemBlockLayer:
+    serializedVersion: 2
+    m_Bits: 1024
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
   finishLayer:
     serializedVersion: 2
     m_Bits: 0
-  fireballProjectile: {fileID: 2360531974601085490, guid: 6e803a9e8a4b2e74888a674cc3dcd4cd, type: 3}
-  gameManager: {fileID: 0}
-  moveSpeed: 5
-  jumpPower: 12.25
+  moveSpeed: 6
+  jumpPower: 16
   checkGroundRadius: 0.1
   currentSpeed: 0
   canMove: 0

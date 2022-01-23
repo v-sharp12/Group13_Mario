@@ -7,15 +7,21 @@ public class characterController : MonoBehaviour
     [SerializeField] private float xinput;
     [SerializeField] private float spaceInput;
     [Header("References")]
-    Rigidbody2D rb;
+    public Rigidbody2D rb;
+    public GameObject fireballProjectile;
+    public gameManager gameManager;    
     public Transform groundChecker;
     public Transform firePoint;
     public Transform headPoint;
+    [Header("Audio")]
+    public AudioClip jumpSound;
+    public AudioClip coinSound;
+    [Header("Layer Masks")]
     public LayerMask groundLayer;
+    public LayerMask brickLayer;
+    public LayerMask itemBlockLayer;
     public LayerMask enemyLayer;
     public LayerMask finishLayer;
-    public GameObject fireballProjectile;
-    public gameManager gameManager;
     
     [Header("Movement Variables")]
     public float moveSpeed;
@@ -40,6 +46,7 @@ public class characterController : MonoBehaviour
         fireFlowerEquipped = false;
         movingRight = false;
         canMove = true;
+        GetComponent<BoxCollider2D>().isTrigger = false;
     }
     void Update()
     {
@@ -49,7 +56,6 @@ public class characterController : MonoBehaviour
         isOnGround();
         playerFlip();
         fireRay();
-
         currentSpeed = rb.velocity.x;
     }
     public void move()
@@ -60,6 +66,7 @@ public class characterController : MonoBehaviour
             if(Input.GetKeyDown(KeyCode.Space) && isGrounded)
             {
                 rb.AddForce(transform.up * jumpPower, ForceMode2D.Impulse);
+                AudioSource.PlayClipAtPoint(jumpSound, transform.position, .2f);
             }
             if(xinput > .01f && rb.velocity.x > 0.1f && facingRight)
             {
@@ -91,13 +98,21 @@ public class characterController : MonoBehaviour
         Collider2D collider = Physics2D.OverlapCircle(headPoint.position, checkGroundRadius, groundLayer);
         if (collider != null)
         {
-            rb.AddForce(-transform.up * (jumpPower/2), ForceMode2D.Impulse);
+            rb.AddForce(-transform.up * (jumpPower/4), ForceMode2D.Impulse);
+        }
+
+        Collider2D itemCollider = Physics2D.OverlapCircle(headPoint.position, checkGroundRadius, itemBlockLayer);
+        if (itemCollider != null)
+        {
+            itemBlock block = itemCollider.gameObject.GetComponent<itemBlock>();
+            block.spawnItem();
         }
         
         RaycastHit2D rayDown = Physics2D.BoxCast(groundChecker.position, new Vector2(.2f,.2f), 0f, -transform.up, .25f, enemyLayer);
         if(rayDown.collider != null)
         {
             Destroy(rayDown.collider.gameObject);
+            AudioSource.PlayClipAtPoint(coinSound, transform.position, .75f);
             gameManager.addScore(100);
             rb.AddForce(transform.up * (jumpPower * 1.25f), ForceMode2D.Impulse);
         }
@@ -105,7 +120,9 @@ public class characterController : MonoBehaviour
     void isOnGround()
     {
         Collider2D collider = Physics2D.OverlapCircle(groundChecker.position, checkGroundRadius, groundLayer);
-        if (collider != null)
+        Collider2D colliderBrick = Physics2D.OverlapCircle(groundChecker.position, checkGroundRadius, brickLayer);
+        Collider2D colliderItemBlock = Physics2D.OverlapCircle(groundChecker.position, checkGroundRadius, itemBlockLayer);
+        if (collider != null || colliderBrick != null || colliderItemBlock != null)
         {
             isGrounded = true;
         }
@@ -126,6 +143,14 @@ public class characterController : MonoBehaviour
             facingRight = !facingRight;
             transform.Rotate(0f, 180f, 0f);
         }
+    }
+    public void die()
+    {
+        canMove = false;
+        rb.velocity = new Vector2(0,0);
+        GetComponent<BoxCollider2D>().isTrigger = true;
+        rb.AddForce(transform.up * jumpPower/20f, ForceMode2D.Impulse);
+
     }
     void OnDrawGizmos()
     {

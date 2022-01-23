@@ -146,6 +146,7 @@ MonoBehaviour:
     m_Bits: 8
   firepointLeft: {fileID: 0}
   firepointRight: {fileID: 0}
+  coinSound: {fileID: 8300000, guid: 5026c74c623895944a2bf811814834f8, type: 3}
   lifeTime: 0
   lifespan: 2
   speed: 10

@@ -10,6 +10,8 @@ public class fireball : MonoBehaviour
     public LayerMask groundLayer;
     public Transform firepointLeft;
     public Transform firepointRight;
+    public AudioClip coinSound;
+    
     [Header("Variables")]  
     public float lifeTime;
     public float lifespan = 5f; // The lenght of time before destroying fireball.
@@ -61,6 +63,7 @@ public class fireball : MonoBehaviour
         {
             player.gameManager.addScore(100);
             Destroy(rayRight.collider.gameObject);
+            AudioSource.PlayClipAtPoint(coinSound, transform.position, .75f);
             Destroy(this.gameObject);
         }
         else if(rayLeft.collider != null)
@@ -68,6 +71,7 @@ public class fireball : MonoBehaviour
 
             player.gameManager.addScore(100);
             Destroy(rayLeft.collider.gameObject);
+            AudioSource.PlayClipAtPoint(coinSound, transform.position, .75f);
             Destroy(this.gameObject);
         }
         RaycastHit2D wallRayLeft = Physics2D.Raycast(firepointLeft.position, -transform.right, .2f, groundLayer);
