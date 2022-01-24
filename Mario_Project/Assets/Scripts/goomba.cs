@@ -56,11 +56,19 @@ public class goomba : MonoBehaviour
         }
         if(playerLeft.collider != null)
         {
-            player.die();
+            if(player.isDead == false)
+            {
+                player.isDead = true;
+                player.die();                
+            }
         }
-        else if(playerLeft.collider != null)
+        else if(playerRight.collider != null)
         {
-            player.die();
+            if(player.isDead == false)
+            {
+                player.isDead = true;
+                player.die();                
+            }
         }
     }
     void OnCollisionEnter2D(Collision2D col)

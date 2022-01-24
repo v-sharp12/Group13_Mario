@@ -9,7 +9,7 @@ public class characterController : MonoBehaviour
     [Header("References")]
     public Rigidbody2D rb;
     public GameObject fireballProjectile;
-    public gameManager gameManager;    
+    public gameManager manager;    
     public Transform groundChecker;
     public Transform firePoint;
     public Transform headPoint;
@@ -33,13 +33,14 @@ public class characterController : MonoBehaviour
     public bool canMove;
     public bool isFlipped;
     public bool isGrounded;
+    public bool isDead;
     public bool facingRight = true;
     public bool movingRight;
     public bool fireFlowerEquipped;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        gameManager = GameObject.Find("GameManager").GetComponent<gameManager>();
+        manager = GameObject.Find("GameManager").GetComponent<gameManager>();
         groundChecker = transform.Find("ground_checker");
         firePoint = transform.Find("firePoint");
         headPoint = transform.Find("headPoint");
@@ -109,11 +110,11 @@ public class characterController : MonoBehaviour
         }
         
         RaycastHit2D rayDown = Physics2D.BoxCast(groundChecker.position, new Vector2(.2f,.2f), 0f, -transform.up, .25f, enemyLayer);
-        if(rayDown.collider != null)
+        if(rayDown.collider != null && !isDead)
         {
             Destroy(rayDown.collider.gameObject);
             AudioSource.PlayClipAtPoint(coinSound, transform.position, .75f);
-            gameManager.addScore(100);
+            manager.addScore(100);
             rb.AddForce(transform.up * (jumpPower * 1.25f), ForceMode2D.Impulse);
         }
     }
@@ -149,13 +150,23 @@ public class characterController : MonoBehaviour
         canMove = false;
         rb.velocity = new Vector2(0,0);
         GetComponent<BoxCollider2D>().isTrigger = true;
-        rb.AddForce(transform.up * jumpPower/20f, ForceMode2D.Impulse);
+        rb.AddForce(transform.up * jumpPower/2f, ForceMode2D.Impulse);
+        manager.loseLife(1);
+        if(gameManager.lives>0)
+        {
+            manager.StartCoroutine("resetLevel");
+        }
+        else if (gameManager.lives<=0)
+        {
+            manager.StartCoroutine("gameOver");
+        }
 
     }
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(groundChecker.position, checkGroundRadius);
+        Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(headPoint.position, checkGroundRadius);
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(firePoint.position, new Vector3(.25f,.25f,.25f));

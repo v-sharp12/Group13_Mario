@@ -61,7 +61,7 @@ public class fireball : MonoBehaviour
         RaycastHit2D rayRight = Physics2D.Raycast(firepointRight.position, transform.right, .2f, enemyLayer);
         if(rayRight.collider != null)
         {
-            player.gameManager.addScore(100);
+            player.manager.addScore(100);
             Destroy(rayRight.collider.gameObject);
             AudioSource.PlayClipAtPoint(coinSound, transform.position, .75f);
             Destroy(this.gameObject);
@@ -69,7 +69,7 @@ public class fireball : MonoBehaviour
         else if(rayLeft.collider != null)
         {
 
-            player.gameManager.addScore(100);
+            player.manager.addScore(100);
             Destroy(rayLeft.collider.gameObject);
             AudioSource.PlayClipAtPoint(coinSound, transform.position, .75f);
             Destroy(this.gameObject);

@@ -13,6 +13,7 @@ public class quickCoin : MonoBehaviour
         gameManager = GameObject.Find("GameManager").GetComponent<gameManager>();
         age = 0;
         gameManager.addScore(100);
+        gameManager.addCoin(1);
         AudioSource.PlayClipAtPoint(coinPickup, transform.position, 1f);
     }
     void Update()
