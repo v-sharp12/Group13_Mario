@@ -5,6 +5,7 @@ using UnityEngine;
 public class fireball : MonoBehaviour
 {
     public characterController player;
+    public powerController powerupControl;
     public Rigidbody2D rb;  
     public LayerMask enemyLayer;
     public LayerMask groundLayer;
@@ -20,6 +21,7 @@ public class fireball : MonoBehaviour
     public void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        powerupControl = GameObject.Find("Player").GetComponent<powerController>();
         firepointLeft = transform.Find("rayFireLeft");
         firepointRight = transform.Find("rayFireRight");
         lifeTime = 0f;
@@ -64,6 +66,7 @@ public class fireball : MonoBehaviour
             player.manager.addScore(100);
             Destroy(rayRight.collider.gameObject);
             AudioSource.PlayClipAtPoint(coinSound, transform.position, .75f);
+            powerupControl.instancedFireballs -= 1;
             Destroy(this.gameObject);
         }
         else if(rayLeft.collider != null)
@@ -72,6 +75,7 @@ public class fireball : MonoBehaviour
             player.manager.addScore(100);
             Destroy(rayLeft.collider.gameObject);
             AudioSource.PlayClipAtPoint(coinSound, transform.position, .75f);
+            powerupControl.instancedFireballs -= 1;
             Destroy(this.gameObject);
         }
         RaycastHit2D wallRayLeft = Physics2D.Raycast(firepointLeft.position, -transform.right, .2f, groundLayer);
@@ -79,10 +83,12 @@ public class fireball : MonoBehaviour
         if(wallRayRight.collider != null)
         {
             Destroy(this.gameObject);
+            powerupControl.instancedFireballs -= 1;
         }
         else if(wallRayLeft.collider != null)
         {
             Destroy(this.gameObject);
+            powerupControl.instancedFireballs -= 1;
         }
     }
     void OnTriggerEnter2D(Collider2D hit)

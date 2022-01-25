@@ -137,6 +137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  powerupControl: {fileID: 0}
   rb: {fileID: 0}
   enemyLayer:
     serializedVersion: 2
@@ -149,7 +150,7 @@ MonoBehaviour:
   coinSound: {fileID: 8300000, guid: 5026c74c623895944a2bf811814834f8, type: 3}
   lifeTime: 0
   lifespan: 2
-  speed: 10
+  speed: 15
 --- !u!1 &2515113305293174719
 GameObject:
   m_ObjectHideFlags: 0

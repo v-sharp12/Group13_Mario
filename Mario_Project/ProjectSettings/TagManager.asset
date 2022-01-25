@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - Ground
   - FinishLine
+  - Powerup
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - Camera Bounds
   - Item Block
   - Brick
-  - 
+  - Powerup
   - 
   - 
   - 

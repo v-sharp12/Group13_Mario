@@ -11,12 +11,14 @@ public class goomba : MonoBehaviour
     public Transform leftFire;
     public Transform rightFire;
     public characterController player;
+    public powerController powerupControl;
     public bool goingRight;
     public float speed;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.Find("Player").GetComponent<characterController>();
+        powerupControl = GameObject.Find("Player").GetComponent<powerController>();
         leftFire = transform.Find("fireLeft");
         rightFire = transform.Find("fireRight");
         Physics.IgnoreLayerCollision(6, 6, true);
@@ -36,16 +38,12 @@ public class goomba : MonoBehaviour
     public void fireRay()
     {
         RaycastHit2D boundsCheck = Physics2D.Raycast(leftFire.position, -transform.right, .5f, boundsLayer);
-        
-        RaycastHit2D rayLeft = Physics2D.Raycast(leftFire.position, -transform.right, .5f, obstacleLayer);
-        RaycastHit2D rayRight = Physics2D.Raycast(rightFire.position, transform.right, .5f, obstacleLayer);
-        
-        RaycastHit2D playerLeft = Physics2D.Raycast(leftFire.position, -transform.right, .5f, playerLayer);
-        RaycastHit2D playerRight = Physics2D.Raycast(rightFire.position, transform.right, .5f, playerLayer);
         if(boundsCheck.collider != null)
         {
             Destroy(this.gameObject);
-        }        
+        }
+        RaycastHit2D rayLeft = Physics2D.Raycast(leftFire.position, -transform.right, .5f, obstacleLayer);
+        RaycastHit2D rayRight = Physics2D.Raycast(rightFire.position, transform.right, .5f, obstacleLayer);                
         if(rayLeft.collider != null)
         {
             goingRight = true;
@@ -54,7 +52,9 @@ public class goomba : MonoBehaviour
         {
             goingRight = false;
         }
-        if(playerLeft.collider != null)
+        RaycastHit2D playerLeft = Physics2D.Raycast(leftFire.position, -transform.right, .5f, playerLayer);
+        RaycastHit2D playerRight = Physics2D.Raycast(rightFire.position, transform.right, .5f, playerLayer);        
+        if(playerLeft.collider != null && powerupControl.starManEquipped == false)
         {
             if(player.isDead == false)
             {
@@ -62,12 +62,30 @@ public class goomba : MonoBehaviour
                 player.die();                
             }
         }
-        else if(playerRight.collider != null)
+        else if(playerLeft.collider != null && powerupControl.starManEquipped)
+        {
+            if(player.isDead == false)
+            {
+                Destroy(this.gameObject);
+                AudioSource.PlayClipAtPoint(player.coinSound, transform.position, .75f);
+                player.manager.addScore(100);            
+            }
+        }
+        else if(playerRight.collider != null && powerupControl.starManEquipped == false)
         {
             if(player.isDead == false)
             {
                 player.isDead = true;
                 player.die();                
+            }
+        }
+        else if(playerRight.collider != null && powerupControl.starManEquipped)
+        {
+            if(player.isDead == false)
+            {
+                Destroy(this.gameObject);
+                AudioSource.PlayClipAtPoint(player.coinSound, transform.position, .75f);
+                player.manager.addScore(100);             
             }
         }
     }

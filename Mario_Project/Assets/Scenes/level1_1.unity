@@ -894,8 +894,6 @@ MonoBehaviour:
   worldNumber: {fileID: 1053883425}
   timeNumber: {fileID: 874046471}
   coinNumber: {fileID: 1657002634}
-  levelResetScreen:
-    m_Handle: 0
   gameTime: 0
 --- !u!1001 &252535264
 PrefabInstance:
@@ -1770,8 +1768,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Score
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a9899c9dcad931145a7fc3b7f260f3e5, type: 2}
+  m_sharedMaterial: {fileID: -6089719973948085116, guid: a9899c9dcad931145a7fc3b7f260f3e5, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1852,6 +1850,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1877836273}
     m_Modifications:
+    - target: {fileID: 834671544649589663, guid: 9196f401221860f498594ae02302021c, type: 3}
+      propertyPath: items.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 834671544649589663, guid: 9196f401221860f498594ae02302021c, type: 3}
+      propertyPath: items.Array.data[0]
+      value: 
+      objectReference: {fileID: 6446478935446128773, guid: bc9a31d0c96438440bdb10420b048f21, type: 3}
     - target: {fileID: 4322741556050641553, guid: 9196f401221860f498594ae02302021c, type: 3}
       propertyPath: m_RootOrder
       value: 32
@@ -10986,6 +10992,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1877836273}
     m_Modifications:
+    - target: {fileID: 834671544649589663, guid: 9196f401221860f498594ae02302021c, type: 3}
+      propertyPath: items.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 834671544649589663, guid: 9196f401221860f498594ae02302021c, type: 3}
+      propertyPath: items.Array.data[0]
+      value: 
+      objectReference: {fileID: 6446478935446128773, guid: dede71923b01bc74188c48cd43d0e810, type: 3}
     - target: {fileID: 4322741556050641553, guid: 9196f401221860f498594ae02302021c, type: 3}
       propertyPath: m_RootOrder
       value: 33
@@ -11078,7 +11092,7 @@ Transform:
   - {fileID: 1773996168}
   - {fileID: 1353124775}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &971888252
 BoxCollider2D:
@@ -11256,7 +11270,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0000
+  m_text: 1-1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -11997,8 +12011,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a9899c9dcad931145a7fc3b7f260f3e5, type: 2}
+  m_sharedMaterial: {fileID: -6089719973948085116, guid: a9899c9dcad931145a7fc3b7f260f3e5, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -13163,8 +13177,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: World
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a9899c9dcad931145a7fc3b7f260f3e5, type: 2}
+  m_sharedMaterial: {fileID: -6089719973948085116, guid: a9899c9dcad931145a7fc3b7f260f3e5, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -14050,7 +14064,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2127855033374056958, guid: 28cac00b1a3d9b44fbccd54fd55d8304, type: 3}
       propertyPath: speed
-      value: 7.5
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2127855033374056958, guid: 28cac00b1a3d9b44fbccd54fd55d8304, type: 3}
       propertyPath: goingRight
@@ -14181,7 +14195,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4189204842842610795, guid: 1d587e5d383131544a6a9bdecdec227c, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4189204842842610795, guid: 1d587e5d383131544a6a9bdecdec227c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -14231,5 +14245,13 @@ PrefabInstance:
       propertyPath: jumpSound
       value: 
       objectReference: {fileID: 8300000, guid: 1d979ac90d2fdeb45911677ec847a89f, type: 3}
+    - target: {fileID: 6735380056764860215, guid: 1d587e5d383131544a6a9bdecdec227c, type: 3}
+      propertyPath: powDuration
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6735380056764860215, guid: 1d587e5d383131544a6a9bdecdec227c, type: 3}
+      propertyPath: starManEquipped
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d587e5d383131544a6a9bdecdec227c, type: 3}

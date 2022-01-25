@@ -8,7 +8,7 @@ public class characterController : MonoBehaviour
     [SerializeField] private float spaceInput;
     [Header("References")]
     public Rigidbody2D rb;
-    public GameObject fireballProjectile;
+
     public gameManager manager;    
     public Transform groundChecker;
     public Transform firePoint;
@@ -36,7 +36,7 @@ public class characterController : MonoBehaviour
     public bool isDead;
     public bool facingRight = true;
     public bool movingRight;
-    public bool fireFlowerEquipped;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -44,7 +44,6 @@ public class characterController : MonoBehaviour
         groundChecker = transform.Find("ground_checker");
         firePoint = transform.Find("firePoint");
         headPoint = transform.Find("headPoint");
-        fireFlowerEquipped = false;
         movingRight = false;
         canMove = true;
         GetComponent<BoxCollider2D>().isTrigger = false;
@@ -52,13 +51,28 @@ public class characterController : MonoBehaviour
     void Update()
     {
         xinput = Input.GetAxis("Horizontal");
-        move();
-        shootFireball();
-        isOnGround();
+        isOnGround();          
+        move();   
+
+        fireRay();        
         playerFlip();
-        fireRay();
+
         currentSpeed = rb.velocity.x;
     }
+    void isOnGround()
+    {
+        Collider2D collider = Physics2D.OverlapCircle(groundChecker.position, checkGroundRadius, groundLayer);
+        Collider2D colliderBrick = Physics2D.OverlapCircle(groundChecker.position, checkGroundRadius, brickLayer);
+        Collider2D colliderItemBlock = Physics2D.OverlapCircle(groundChecker.position, checkGroundRadius, itemBlockLayer);
+        if (collider != null || colliderBrick != null || colliderItemBlock != null)
+        {
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
+        }
+    }    
     public void move()
     {
         if(canMove)
@@ -77,21 +91,6 @@ public class characterController : MonoBehaviour
             {
                 movingRight = false;
             }            
-        }
-    }
-    public void shootFireball()
-    {
-        if(Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift) /*&& fireFlowerEquipped*/)
-        {
-            GameObject projectile = Instantiate(fireballProjectile, firePoint.position, Quaternion.identity);
-            fireball fireball = projectile.GetComponent<fireball>();
-            fireball.player = GetComponent<characterController>();
-            if(!facingRight)
-            {
-                projectile.transform.Rotate(0f, 180f, 0f);
-            }
-            Rigidbody2D fireballRb = projectile.GetComponent<Rigidbody2D>();
-            fireballRb.AddForce(transform.right * 5, ForceMode2D.Impulse);
         }
     }
     public void fireRay()
@@ -117,21 +116,8 @@ public class characterController : MonoBehaviour
             manager.addScore(100);
             rb.AddForce(transform.up * (jumpPower * 1.25f), ForceMode2D.Impulse);
         }
-    }
-    void isOnGround()
-    {
-        Collider2D collider = Physics2D.OverlapCircle(groundChecker.position, checkGroundRadius, groundLayer);
-        Collider2D colliderBrick = Physics2D.OverlapCircle(groundChecker.position, checkGroundRadius, brickLayer);
-        Collider2D colliderItemBlock = Physics2D.OverlapCircle(groundChecker.position, checkGroundRadius, itemBlockLayer);
-        if (collider != null || colliderBrick != null || colliderItemBlock != null)
-        {
-            isGrounded = true;
-        }
-        else
-        {
-            isGrounded = false;
-        }
-    }
+    }    
+
     public void playerFlip() 
     {
         if (rb.velocity.x > 0 && !facingRight)
@@ -160,8 +146,8 @@ public class characterController : MonoBehaviour
         {
             manager.StartCoroutine("gameOver");
         }
-
     }
+
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

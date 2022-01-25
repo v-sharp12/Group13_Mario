@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1954008343552630062
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4984932719552630947}
+  m_Layer: 6
+  m_Name: fireDown
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4984932719552630947
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1954008343552630062}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6446478935446128775}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4113130385932713679
 GameObject:
   m_ObjectHideFlags: 0
@@ -30,6 +60,36 @@ Transform:
   m_Father: {fileID: 6446478935446128775}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6400152991862126097
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3041777520022633862}
+  m_Layer: 6
+  m_Name: fireUp
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3041777520022633862
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6400152991862126097}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6446478935446128775}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6446478935446128773
 GameObject:
   m_ObjectHideFlags: 0
@@ -42,10 +102,10 @@ GameObject:
   - component: {fileID: 6446478935446128774}
   - component: {fileID: 6446478935446128777}
   - component: {fileID: 6446478935446128776}
-  - component: {fileID: 2127855033374056958}
-  m_Layer: 6
-  m_Name: Goomba
-  m_TagString: Enemy
+  - component: {fileID: 6066359691324052721}
+  m_Layer: 12
+  m_Name: Fire Flower
+  m_TagString: Powerup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -63,6 +123,8 @@ Transform:
   m_Children:
   - {fileID: 5218363111960650299}
   - {fileID: 3076702274132435253}
+  - {fileID: 3041777520022633862}
+  - {fileID: 4984932719552630947}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -106,8 +168,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  m_Color: {r: 0.4056604, g: 0.28747442, b: 0.12501481, a: 1}
+  m_Sprite: {fileID: 7407708239759161024, guid: 1eae5b5082ab6b444bba777e94193b43, type: 3}
+  m_Color: {r: 0.7735849, g: 0.4527637, b: 0.2675922, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -147,7 +209,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 6446478935446128773}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 62ee9086c677ad447b916fc0d379d927, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -164,7 +226,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &2127855033374056958
+--- !u!114 &6066359691324052721
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -173,7 +235,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6446478935446128773}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1bb7e69cba7be0428f5d98af62279dc, type: 3}
+  m_Script: {fileID: 11500000, guid: 1f761bef965da6849b8620f2edcca006, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
@@ -186,11 +248,19 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 256
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
   leftFire: {fileID: 0}
   rightFire: {fileID: 0}
+  upFire: {fileID: 0}
+  downFire: {fileID: 0}
   player: {fileID: 0}
+  powerupControl: {fileID: 0}
   goingRight: 0
-  speed: 5
+  isGrounded: 0
+  speed: 0
+  checkGroundRadius: 0.5
 --- !u!1 &7429122956264096696
 GameObject:
   m_ObjectHideFlags: 0
