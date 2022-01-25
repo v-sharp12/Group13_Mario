@@ -6,11 +6,14 @@ public class itemBlock : MonoBehaviour
 {
     public GameObject[] items;
     public Transform spawnPoint;
+    public SpriteRenderer sprite;
+    public Color col;
     public bool canSpawn;
     public int spawnIndex;
     void Start()
     {
         spawnPoint = transform.Find("itemSpawn");
+        sprite = GetComponent<SpriteRenderer>();
         canSpawn = true;
     }
     void Update()
@@ -20,9 +23,10 @@ public class itemBlock : MonoBehaviour
     public void spawnItem()
     {
         if(canSpawn)
-        {
+        {    
         GameObject item = Instantiate(items[spawnIndex], spawnPoint.position, Quaternion.identity);
-        canSpawn = false;            
+        canSpawn = false;
+        sprite.color = col;
         }
     }
 }

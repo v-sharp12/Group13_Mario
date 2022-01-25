@@ -18,7 +18,7 @@ public class levelReset : MonoBehaviour
     void Start()
     {
         manager = FindObjectOfType<gameManager>();
-        livesNumber.text = ("" + gameManager.lives);
+        livesNumber.text = ("x " + gameManager.lives);
         StartCoroutine("fade");
     }
     void Update()

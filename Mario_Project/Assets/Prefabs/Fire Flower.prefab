@@ -103,6 +103,7 @@ GameObject:
   - component: {fileID: 6446478935446128777}
   - component: {fileID: 6446478935446128776}
   - component: {fileID: 6066359691324052721}
+  - component: {fileID: 2982977453194968268}
   m_Layer: 12
   m_Name: Fire Flower
   m_TagString: Powerup
@@ -168,8 +169,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7407708239759161024, guid: 1eae5b5082ab6b444bba777e94193b43, type: 3}
-  m_Color: {r: 0.7735849, g: 0.4527637, b: 0.2675922, a: 1}
+  m_Sprite: {fileID: -6376065431628564017, guid: 873fd084f3dd0374eb9678e8d5596119, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -261,6 +262,25 @@ MonoBehaviour:
   isGrounded: 0
   speed: 0
   checkGroundRadius: 0.5
+--- !u!95 &2982977453194968268
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6446478935446128773}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8ac9215dd3435af488614bd9fec93e43, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7429122956264096696
 GameObject:
   m_ObjectHideFlags: 0

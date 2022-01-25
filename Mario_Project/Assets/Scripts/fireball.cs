@@ -59,8 +59,8 @@ public class fireball : MonoBehaviour
     }
     public void fireRay()
     {
-        RaycastHit2D rayLeft = Physics2D.Raycast(firepointLeft.position, -transform.right, .2f, enemyLayer);
-        RaycastHit2D rayRight = Physics2D.Raycast(firepointRight.position, transform.right, .2f, enemyLayer);
+        RaycastHit2D rayLeft = Physics2D.Raycast(firepointLeft.position, -transform.right, .3f, enemyLayer);
+        RaycastHit2D rayRight = Physics2D.Raycast(firepointRight.position, transform.right, .3f, enemyLayer);
         if(rayRight.collider != null)
         {
             player.manager.addScore(100);
@@ -78,8 +78,8 @@ public class fireball : MonoBehaviour
             powerupControl.instancedFireballs -= 1;
             Destroy(this.gameObject);
         }
-        RaycastHit2D wallRayLeft = Physics2D.Raycast(firepointLeft.position, -transform.right, .2f, groundLayer);
-        RaycastHit2D wallRayRight = Physics2D.Raycast(firepointRight.position, transform.right, .2f, groundLayer);
+        RaycastHit2D wallRayLeft = Physics2D.Raycast(firepointLeft.position, -transform.right, .3f, groundLayer);
+        RaycastHit2D wallRayRight = Physics2D.Raycast(firepointRight.position, transform.right, .3f, groundLayer);
         if(wallRayRight.collider != null)
         {
             Destroy(this.gameObject);
