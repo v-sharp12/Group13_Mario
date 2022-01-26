@@ -12,12 +12,18 @@ public class gameManager : MonoBehaviour
     public TextMeshProUGUI worldNumber;
     public TextMeshProUGUI timeNumber;
     public TextMeshProUGUI coinNumber;
+    public characterController player;
+    public Transform playerTransform;
     
     [Header("Variables")]
     [SerializeField]private float gameTime;
+    public bool trackTime;
     public static int score;
     public static int coins;
     public static int lives;
+    public int additiveScore;
+    [Header("Sounds")]
+    public AudioClip coinSound;
     void awake()
     {
 
@@ -25,19 +31,38 @@ public class gameManager : MonoBehaviour
     void Start()
     {
         gameTime = 400;
-        //score = 0;
-        //coins = 0;
+        trackTime = true;
+        player = FindObjectOfType<characterController>();
+        playerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
     }
     void Update()
     {
         uiTextControl();
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
     public void uiTextControl()
     {
-        gameTime -= Time.deltaTime;
+        if (trackTime)
+        {
+            gameTime -= Time.deltaTime;            
+        }
         timeNumber.text = ("" + Mathf.Round(gameTime));
         scoreNumber.text = ("" + score);
         coinNumber.text = ("" + coins);
+        if(gameTime<=0)
+        {
+            if(gameManager.lives>0)
+            {
+                StartCoroutine("resetLevel");
+            }
+            else if (gameManager.lives<=0)
+            {
+                StartCoroutine("gameOver");
+            }   
+        }
     }
     public void addScore(int amount)
     {
@@ -60,5 +85,37 @@ public class gameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         SceneManager.LoadScene("gameOver");
+    }
+    public void calculateScore()
+    {
+        if(gameTime >= 300)
+        {
+            additiveScore += 1000;
+        }
+        else if (gameTime < 300 && gameTime >= 200)
+        {
+            additiveScore += 500;
+        }
+        else if (gameTime < 200 && gameTime >= 100)
+        {
+            additiveScore += 250;
+        }
+        else if (gameTime < 100 && gameTime >= 0)
+        {
+            additiveScore += 100;
+        }
+    }
+    public void addToScore()
+    {
+        AudioSource.PlayClipAtPoint(coinSound, playerTransform.position, 1f);
+        score = score + additiveScore;
+    }
+    public IEnumerator finishLevel()
+    {
+        trackTime = false;
+        calculateScore();
+        yield return new WaitForSeconds(2f);
+        addToScore();
+        player.travelRight = true;
     }
 }

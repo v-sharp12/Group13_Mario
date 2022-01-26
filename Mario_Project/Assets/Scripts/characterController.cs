@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class characterController : MonoBehaviour
 {
@@ -36,6 +37,7 @@ public class characterController : MonoBehaviour
     public bool isDead;
     public bool facingRight = true;
     public bool movingRight;
+    public bool travelRight;
 
     void Start()
     {
@@ -46,6 +48,7 @@ public class characterController : MonoBehaviour
         headPoint = transform.Find("headPoint");
         movingRight = false;
         canMove = true;
+        travelRight = false;
         GetComponent<BoxCollider2D>().isTrigger = false;
     }
     void Update()
@@ -53,11 +56,13 @@ public class characterController : MonoBehaviour
         xinput = Input.GetAxis("Horizontal");
         isOnGround();          
         move();   
-
         fireRay();        
         playerFlip();
-
         currentSpeed = rb.velocity.x;
+        if(travelRight)
+        {
+            rb.velocity = new Vector2(1 * moveSpeed, rb.velocity.y);
+        }
     }
     void isOnGround()
     {
@@ -147,7 +152,17 @@ public class characterController : MonoBehaviour
             manager.StartCoroutine("gameOver");
         }
     }
-
+    void OnTriggerEnter2D(Collider2D hit)
+    {
+        if(hit.CompareTag("Finish"))
+        {
+            SceneManager.LoadScene("gameWin");
+        }
+        if(hit.CompareTag("Death Hazard"))
+        {
+            die();
+        }
+    }
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

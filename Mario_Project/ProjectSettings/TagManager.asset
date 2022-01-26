@@ -11,6 +11,7 @@ TagManager:
   - highScore
   - medScore
   - lowScore
+  - Death Hazard
   layers:
   - Default
   - TransparentFX
