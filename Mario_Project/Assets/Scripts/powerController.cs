@@ -41,7 +41,7 @@ public class powerController : MonoBehaviour
     }
     public void shootFireball()
     {
-        if(Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift) && fireFlowerEquipped && instancedFireballs<2)
+        if(Input.GetKeyDown(KeyCode.LeftShift) && fireFlowerEquipped && instancedFireballs < 2 || Input.GetKeyDown(KeyCode.RightShift) && fireFlowerEquipped && instancedFireballs < 2 || Input.GetKeyDown(KeyCode.Z) && fireFlowerEquipped && instancedFireballs < 2)
         {
             GameObject projectile = Instantiate(fireballProjectile, player.firePoint.position, Quaternion.identity);
             currFireballsFired = Mathf.Clamp(currFireballsFired += 1, 0, maxFireballsfired);

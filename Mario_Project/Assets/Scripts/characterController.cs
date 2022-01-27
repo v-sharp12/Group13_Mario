@@ -7,20 +7,24 @@ public class characterController : MonoBehaviour
 {
     [SerializeField] private float xinput;
     [SerializeField] private float spaceInput;
+    
     [Header("References")]
     public Rigidbody2D rb;
-
-    public gameManager manager;    
+    public gameManager manager; 
+    public powerController power;   
     public Transform groundChecker;
     public Transform firePoint;
     public Transform headPoint;
+    
     [Header("Audio")]
     public AudioClip jumpSound;
     public AudioClip coinSound;
+    
     [Header("Layer Masks")]
     public LayerMask groundLayer;
     public LayerMask brickLayer;
     public LayerMask itemBlockLayer;
+    public LayerMask coinLayer;
     public LayerMask enemyLayer;
     public LayerMask finishLayer;
     
@@ -29,6 +33,7 @@ public class characterController : MonoBehaviour
     public float jumpPower;
     public float checkGroundRadius;
     public float currentSpeed;
+    public float sprintScale;
     
     [Header("Movement Constraints")]
     public bool canMove;
@@ -43,10 +48,12 @@ public class characterController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         manager = GameObject.Find("GameManager").GetComponent<gameManager>();
+        power = GetComponent<powerController>();
         groundChecker = transform.Find("ground_checker");
         firePoint = transform.Find("firePoint");
         headPoint = transform.Find("headPoint");
         movingRight = false;
+        sprintScale = 1;
         canMove = true;
         travelRight = false;
         GetComponent<BoxCollider2D>().isTrigger = false;
@@ -61,7 +68,7 @@ public class characterController : MonoBehaviour
         currentSpeed = rb.velocity.x;
         if(travelRight)
         {
-            rb.velocity = new Vector2(1 * moveSpeed, rb.velocity.y);
+            rb.velocity = new Vector2(1 * moveSpeed/3f, rb.velocity.y);
         }
     }
     void isOnGround()
@@ -82,16 +89,27 @@ public class characterController : MonoBehaviour
     {
         if(canMove)
         {
-            rb.velocity = new Vector2(moveSpeed * xinput, rb.velocity.y);
-            if(Input.GetKeyDown(KeyCode.Space) && isGrounded)
+            rb.velocity = new Vector2((moveSpeed * sprintScale) * xinput, rb.velocity.y);
+            if(Input.GetKeyDown(KeyCode.LeftShift) && power.fireFlowerEquipped == false || Input.GetKeyDown(KeyCode.RightShift) && power.fireFlowerEquipped == false || Input.GetKeyDown(KeyCode.Z) && power.fireFlowerEquipped == false)
+            {
+                sprintScale = 1.5f;
+            }
+            else if(Input.GetKeyUp(KeyCode.LeftShift)|| Input.GetKeyUp(KeyCode.RightShift) || Input.GetKeyUp(KeyCode.Z))
+            {
+                sprintScale = 1;              
+            }
+
+            if(Input.GetKeyDown(KeyCode.Space) && isGrounded || Input.GetKeyDown(KeyCode.X) && isGrounded)
             {
                 rb.AddForce(transform.up * jumpPower, ForceMode2D.Impulse);
                 AudioSource.PlayClipAtPoint(jumpSound, transform.position, .2f);
             }
+
             if(xinput > .01f && rb.velocity.x > 0.1f && facingRight)
             {
                 movingRight = true;
             }
+
             else if (facingRight != true || rb.velocity.x <= 0.1f)
             {
                 movingRight = false;
@@ -103,16 +121,34 @@ public class characterController : MonoBehaviour
         Collider2D collider = Physics2D.OverlapCircle(headPoint.position, checkGroundRadius, groundLayer);
         if (collider != null)
         {
-            rb.AddForce(-transform.up * (jumpPower/4), ForceMode2D.Impulse);
+            rb.AddForce(-transform.up * (jumpPower/5), ForceMode2D.Impulse);
         }
 
         Collider2D itemCollider = Physics2D.OverlapCircle(headPoint.position, checkGroundRadius, itemBlockLayer);
-        if (itemCollider != null)
+        if (itemCollider != null )
         {
             itemBlock block = itemCollider.gameObject.GetComponent<itemBlock>();
             block.spawnItem();
         }
+
+        Collider2D coinCollider = Physics2D.OverlapCircle(headPoint.position, checkGroundRadius, coinLayer);
+        if (coinCollider != null)
+        {
+            coinBlock block = coinCollider.gameObject.GetComponent<coinBlock>();
+            Debug.Log("" + block.name);
+            block.spawnItem();
+        }
         
+        Collider2D brickCollider = Physics2D.OverlapCircle(headPoint.position, checkGroundRadius, brickLayer);
+        if (brickCollider != null)
+        {
+            if(power.bigMushroomEquipped)
+            {
+                rb.AddForce(-transform.up * (jumpPower/5), ForceMode2D.Impulse);
+                Destroy(brickCollider.gameObject);
+            }
+        }
+
         RaycastHit2D rayDown = Physics2D.BoxCast(groundChecker.position, new Vector2(.2f,.2f), 0f, -transform.up, .25f, enemyLayer);
         if(rayDown.collider != null && !isDead)
         {

@@ -14,6 +14,7 @@ public class gameManager : MonoBehaviour
     public TextMeshProUGUI coinNumber;
     public characterController player;
     public Transform playerTransform;
+    public Vector3 underWorldSpawn;
     
     [Header("Variables")]
     [SerializeField]private float gameTime;
@@ -22,6 +23,8 @@ public class gameManager : MonoBehaviour
     public static int coins;
     public static int lives;
     public int additiveScore;
+    public static bool underWorld;
+    
     [Header("Sounds")]
     public AudioClip coinSound;
     void awake()

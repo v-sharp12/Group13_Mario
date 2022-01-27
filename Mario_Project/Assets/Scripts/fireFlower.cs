@@ -5,16 +5,25 @@ using UnityEngine;
 public class fireFlower : MonoBehaviour
 {
     public Rigidbody2D rb;
+    
+    [Header("Layer Masks")]
     public LayerMask obstacleLayer;
     public LayerMask boundsLayer;
     public LayerMask playerLayer;
     public LayerMask groundLayer;
+    
+    [Header("Transforms")]
     public Transform leftFire;
     public Transform rightFire;
     public Transform upFire;
     public Transform downFire;
+    
+    [Header("References")]
     public characterController player;
     public powerController powerupControl;
+    public gameManager manager;
+    
+    [Header("Variables")]
     public bool goingRight;
     public bool isGrounded;
     public float speed;
@@ -24,6 +33,7 @@ public class fireFlower : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.Find("Player").GetComponent<characterController>();
         powerupControl = GameObject.Find("Player").GetComponent<powerController>();
+        manager = GameObject.Find("GameManager").GetComponent<gameManager>();
         leftFire = transform.Find("fireLeft");
         rightFire = transform.Find("fireRight");
         upFire = transform.Find("fireUp");
@@ -59,21 +69,25 @@ public class fireFlower : MonoBehaviour
         if(playerLeft.collider != null)
         {
             powerupControl.fireFlowerEquipped = true;
+            manager.addScore(1000);
             Destroy(this.gameObject);
         }
         else if(playerRight.collider != null)
         {
             powerupControl.fireFlowerEquipped = true;
+            manager.addScore(1000);
             Destroy(this.gameObject);
         }
         if(playerUp.collider != null)
         {
             powerupControl.fireFlowerEquipped = true;
+            manager.addScore(1000);
             Destroy(this.gameObject);
         }
         else if(playerDown.collider != null)
         {
             powerupControl.fireFlowerEquipped = true;
+            manager.addScore(1000);
             Destroy(this.gameObject);
         }
     }

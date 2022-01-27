@@ -10,6 +10,7 @@ public class itemBlock : MonoBehaviour
     public Color col;
     public bool canSpawn;
     public int spawnIndex;
+    public int currTaps;
     void Start()
     {
         spawnPoint = transform.Find("itemSpawn");
