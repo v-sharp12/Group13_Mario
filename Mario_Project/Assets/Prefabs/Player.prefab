@@ -222,7 +222,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.32704395, b: 0.32704395, a: 1}
+      maxColor: {r: 0.32549024, g: 0.82850456, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4814,6 +4814,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4189204842842610795}
   - component: {fileID: 7046343051646495001}
+  - component: {fileID: 8222706674758885686}
   - component: {fileID: 5871856225203397056}
   - component: {fileID: 7174627695794356294}
   - component: {fileID: 6735380056764860215}
@@ -4884,8 +4885,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  m_Color: {r: 1, g: 0.8647324, b: 0, a: 1}
+  m_Sprite: {fileID: -2867875027571199722, guid: e88e83ae153291147a935db351c7a3dc, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -4895,6 +4896,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &8222706674758885686
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4694761062967810694}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 17008aad8de4b514d8687a95463a9ce7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!50 &5871856225203397056
 Rigidbody2D:
   serializedVersion: 4
@@ -4933,7 +4953,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 1.0086956, y: 1.0086956}
     newSize: {x: 0.16, y: 0.16}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -4958,9 +4978,12 @@ MonoBehaviour:
   spaceInput: 0
   rb: {fileID: 0}
   manager: {fileID: 0}
+  power: {fileID: 0}
   groundChecker: {fileID: 7174627695899876170}
   firePoint: {fileID: 7174627694278894949}
   headPoint: {fileID: 8595926248752790358}
+  anim: {fileID: 0}
+  sprite: {fileID: 0}
   jumpSound: {fileID: 8300000, guid: 1d979ac90d2fdeb45911677ec847a89f, type: 3}
   coinSound: {fileID: 8300000, guid: 5026c74c623895944a2bf811814834f8, type: 3}
   groundLayer:
@@ -4981,10 +5004,14 @@ MonoBehaviour:
   finishLayer:
     serializedVersion: 2
     m_Bits: 8192
+  underLayer:
+    serializedVersion: 2
+    m_Bits: 32768
   moveSpeed: 6
   jumpPower: 16
   checkGroundRadius: 0.1
   currentSpeed: 0
+  sprintScale: 0
   canMove: 0
   isFlipped: 0
   isGrounded: 0
@@ -5006,6 +5033,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   fireballProjectile: {fileID: 2360531974601085490, guid: 6e803a9e8a4b2e74888a674cc3dcd4cd, type: 3}
+  baseColor: {r: 0, g: 0, b: 0, a: 0}
+  secColor: {r: 0, g: 0, b: 0, a: 0}
   powDuration: 10
   fireFlowerEquipped: 0
   fireTimer: 0

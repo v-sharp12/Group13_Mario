@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 6446478935446128777}
   - component: {fileID: 6446478935446128776}
   - component: {fileID: 2127855033374056958}
+  - component: {fileID: 6653753929588859116}
   m_Layer: 6
   m_Name: Goomba
   m_TagString: Enemy
@@ -106,8 +107,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  m_Color: {r: 0.4056604, g: 0.28747442, b: 0.12501481, a: 1}
+  m_Sprite: {fileID: -9145780748715894314, guid: 4ec53dbcbd7a87a439146d66e1f67ab0, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -189,8 +190,28 @@ MonoBehaviour:
   leftFire: {fileID: 0}
   rightFire: {fileID: 0}
   player: {fileID: 0}
+  powerupControl: {fileID: 0}
   goingRight: 0
-  speed: 5
+  speed: 3
+--- !u!95 &6653753929588859116
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6446478935446128773}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f58d26057aa1f014bb2688af3dafc3e6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7429122956264096696
 GameObject:
   m_ObjectHideFlags: 0

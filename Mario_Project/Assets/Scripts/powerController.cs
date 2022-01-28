@@ -6,6 +6,8 @@ public class powerController : MonoBehaviour
 {
     public characterController player;
     public GameObject fireballProjectile;
+    public Color baseColor;
+    public Color secColor;
     
     [Header("Powerup Variables and Constraints")]
     public float powDuration = 10;
@@ -73,7 +75,7 @@ public class powerController : MonoBehaviour
             currFireballsFired = 0;
         }
     }
-        public void starMan()
+    public void starMan()
     {
         if(starManEquipped)
         {
@@ -90,5 +92,21 @@ public class powerController : MonoBehaviour
         {
             starManEquipped = false;
         }  
+    }
+
+    public IEnumerator getPowerup()
+    {
+        player.sprite.color = baseColor;
+        yield return new WaitForSecondsRealtime(0.1f);
+        player.sprite.color = secColor;
+        yield return new WaitForSecondsRealtime(0.1f);
+        player.sprite.color = baseColor;
+        yield return new WaitForSecondsRealtime(0.1f);
+        player.sprite.color = secColor;
+        yield return new WaitForSecondsRealtime(0.1f);
+        player.sprite.color = baseColor;
+        yield return new WaitForSecondsRealtime(0.1f);
+        player.sprite.color = secColor;
+        yield return new WaitForSecondsRealtime(0.1f);
     }
 }

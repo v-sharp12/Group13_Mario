@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6381189124538222217}
   - component: {fileID: 7853593451737612423}
   - component: {fileID: 8578503181291815706}
+  - component: {fileID: 7340468723577184926}
   m_Layer: 0
   m_Name: CoinUnderground
   m_TagString: Untagged
@@ -117,3 +118,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 0}
   coinPickup: {fileID: 8300000, guid: 5026c74c623895944a2bf811814834f8, type: 3}
+--- !u!58 &7340468723577184926
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6381189124538222219}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.46875

@@ -33,7 +33,7 @@ public class gameWin : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         screenFade.SetActive(false);
         AudioSource.PlayClipAtPoint(gongSound, transform.position, 1f);
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(3f);
         SceneManager.LoadScene("start");
     }
 }

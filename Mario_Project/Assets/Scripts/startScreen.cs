@@ -18,6 +18,7 @@ public class startScreen : MonoBehaviour
         gameManager.lives = 3;
         gameManager.score = 0;
         gameManager.coins = 0;
+        gameManager.checkpointPassed = false;
         SceneManager.LoadScene("resetLevelTransition");
     }
 }

@@ -24,12 +24,16 @@ public class gameManager : MonoBehaviour
     public static int lives;
     public int additiveScore;
     public static bool underWorld;
+    public static bool checkpointPassed;
     
     [Header("Sounds")]
     public AudioClip coinSound;
     void awake()
     {
+        if(checkpointPassed)
+        {
 
+        }
     }
     void Start()
     {
@@ -89,6 +93,11 @@ public class gameManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
         SceneManager.LoadScene("gameOver");
     }
+    public IEnumerator gameOverHazard()
+    {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene("gameOver");
+    }
     public void calculateScore()
     {
         if(gameTime >= 300)
@@ -115,6 +124,7 @@ public class gameManager : MonoBehaviour
     }
     public IEnumerator finishLevel()
     {
+        player.anim.SetBool("levelWin", true);
         trackTime = false;
         calculateScore();
         yield return new WaitForSeconds(2f);

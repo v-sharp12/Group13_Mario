@@ -15,6 +15,10 @@ public class characterController : MonoBehaviour
     public Transform groundChecker;
     public Transform firePoint;
     public Transform headPoint;
+    public Animator anim;
+    public SpriteRenderer sprite;
+    public sideScrollLimiter limiter;
+    public Transform checkpointTransform;
     
     [Header("Audio")]
     public AudioClip jumpSound;
@@ -27,6 +31,7 @@ public class characterController : MonoBehaviour
     public LayerMask coinLayer;
     public LayerMask enemyLayer;
     public LayerMask finishLayer;
+    public LayerMask pipeLayer;
     
     [Header("Movement Variables")]
     public float moveSpeed;
@@ -52,11 +57,20 @@ public class characterController : MonoBehaviour
         groundChecker = transform.Find("ground_checker");
         firePoint = transform.Find("firePoint");
         headPoint = transform.Find("headPoint");
+        anim = GetComponent<Animator>();
+        sprite = GetComponent<SpriteRenderer>();
+        limiter = GameObject.FindGameObjectWithTag("Camera Bounds").GetComponent<sideScrollLimiter>();
+        isDead = false;
         movingRight = false;
         sprintScale = 1;
         canMove = true;
         travelRight = false;
         GetComponent<BoxCollider2D>().isTrigger = false;
+        if(gameManager.checkpointPassed == true)
+        {
+            transform.position = checkpointTransform.position;
+            limiter.setpos();
+        }
     }
     void Update()
     {
@@ -65,10 +79,15 @@ public class characterController : MonoBehaviour
         move();   
         fireRay();        
         playerFlip();
+        win();
         currentSpeed = rb.velocity.x;
-        if(travelRight)
+        if(xinput > 0.1f && isGrounded || xinput < -0.1f && isGrounded)
         {
-            rb.velocity = new Vector2(1 * moveSpeed/3f, rb.velocity.y);
+            anim.SetBool("isMoving", true);
+        }
+        else if(xinput < 0.1f && xinput > -0.1f || !isGrounded)
+        {
+            anim.SetBool("isMoving", false);
         }
     }
     void isOnGround()
@@ -79,10 +98,12 @@ public class characterController : MonoBehaviour
         if (collider != null || colliderBrick != null || colliderItemBlock != null)
         {
             isGrounded = true;
+            anim.SetBool("isGrounded", true);
         }
         else
         {
             isGrounded = false;
+            anim.SetBool("isGrounded", false);
         }
     }    
     public void move()
@@ -148,7 +169,14 @@ public class characterController : MonoBehaviour
                 Destroy(brickCollider.gameObject);
             }
         }
-
+         
+        RaycastHit2D underCheck = Physics2D.Raycast(groundChecker.position, -transform.up, 0.3f, pipeLayer);
+        if(underCheck.collider != null && Input.GetKeyDown(KeyCode.S) || underCheck.collider != null && Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            Debug.Log("hi");
+            underCheck.collider.gameObject.SetActive(false);
+        }
+        
         RaycastHit2D rayDown = Physics2D.BoxCast(groundChecker.position, new Vector2(.2f,.2f), 0f, -transform.up, .25f, enemyLayer);
         if(rayDown.collider != null && !isDead)
         {
@@ -174,18 +202,38 @@ public class characterController : MonoBehaviour
     }
     public void die()
     {
-        canMove = false;
-        rb.velocity = new Vector2(0,0);
-        GetComponent<BoxCollider2D>().isTrigger = true;
-        rb.AddForce(transform.up * jumpPower/2f, ForceMode2D.Impulse);
-        manager.loseLife(1);
-        if(gameManager.lives>0)
+        if(!isDead)
         {
-            manager.StartCoroutine("resetLevel");
+            canMove = false;
+            isDead = true;
+            rb.velocity = new Vector2(0,0);
+            GetComponent<BoxCollider2D>().isTrigger = true;
+            rb.AddForce(transform.up * jumpPower/1.5f, ForceMode2D.Impulse);
+            anim.SetBool("isDead", true);
+            manager.loseLife(1);
+            if(gameManager.lives>0)
+            {
+                manager.StartCoroutine("resetLevel");
+            }
+            else if (gameManager.lives<=0)
+            {
+                manager.StartCoroutine("gameOverHazard");
+            } 
         }
-        else if (gameManager.lives<=0)
+    }
+    public void win()
+    {
+        if(travelRight)
         {
-            manager.StartCoroutine("gameOver");
+            rb.velocity = new Vector2(1 * moveSpeed/3f, rb.velocity.y);
+            anim.SetBool("levelWin", true);
+        }
+        
+        RaycastHit2D touchingPlatform = Physics2D.Raycast(groundChecker.position, -transform.up, .5f, finishLayer);
+        if(touchingPlatform.collider != null && travelRight)
+        {
+            rb.AddForce(transform.up * (jumpPower / 100f), ForceMode2D.Impulse);
+            //AudioSource.PlayClipAtPoint(jumpSound, transform.position, .2f);
         }
     }
     void OnTriggerEnter2D(Collider2D hit)
