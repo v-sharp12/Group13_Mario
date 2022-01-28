@@ -95,8 +95,8 @@ public class gameManager : MonoBehaviour
     }
     public IEnumerator gameOverHazard()
     {
+        SceneManager.LoadScene("gameOver");        
         yield return new WaitForSeconds(2f);
-        SceneManager.LoadScene("gameOver");
     }
     public void calculateScore()
     {

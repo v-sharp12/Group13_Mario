@@ -13,6 +13,7 @@ TagManager:
   - lowScore
   - Death Hazard
   - Camera Bounds
+  - Coin
   layers:
   - Default
   - TransparentFX

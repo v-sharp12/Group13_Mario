@@ -11,27 +11,38 @@ public class goomba : MonoBehaviour
     public Transform leftFire;
     public Transform rightFire;
     public characterController player;
+    public GameObject playerGameObject;
     public powerController powerupControl;
     public bool goingRight;
+    public bool startMoving;
     public float speed;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.Find("Player").GetComponent<characterController>();
+        playerGameObject = GameObject.Find("Player");
         powerupControl = GameObject.Find("Player").GetComponent<powerController>();
         leftFire = transform.Find("fireLeft");
         rightFire = transform.Find("fireRight");
         Physics.IgnoreLayerCollision(6, 6, true);
+        startMoving = false;
     }
     void Update()
     {
-        if(goingRight)
+        if(Vector3.Distance(transform.position, playerGameObject.transform.position) < 15)
         {
-            rb.velocity = new Vector2(speed, rb.velocity.y);
+            startMoving = true;
         }
-        else if(!goingRight)
+        if(startMoving)
         {
-            rb.velocity = new Vector2(-speed, rb.velocity.y);
+            if(goingRight)
+            {
+                rb.velocity = new Vector2(speed, rb.velocity.y);
+            }
+                else if(!goingRight)
+            {
+                rb.velocity = new Vector2(-speed, rb.velocity.y);
+            }            
         }
         fireRay();
     }
@@ -58,8 +69,8 @@ public class goomba : MonoBehaviour
         {
             if(player.isDead == false)
             {
-                player.isDead = true;
-                player.die();                
+                player.die();                   
+                player.isDead = true;               
             }
         }
         else if(playerLeft.collider != null && powerupControl.starManEquipped)
@@ -75,8 +86,8 @@ public class goomba : MonoBehaviour
         {
             if(player.isDead == false)
             {
+                player.die();                   
                 player.isDead = true;
-                player.die();                
             }
         }
         else if(playerRight.collider != null && powerupControl.starManEquipped)

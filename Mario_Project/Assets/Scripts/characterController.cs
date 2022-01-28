@@ -19,6 +19,7 @@ public class characterController : MonoBehaviour
     public SpriteRenderer sprite;
     public sideScrollLimiter limiter;
     public Transform checkpointTransform;
+    public TrailRenderer trail;
     
     [Header("Audio")]
     public AudioClip jumpSound;
@@ -60,6 +61,7 @@ public class characterController : MonoBehaviour
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         limiter = GameObject.FindGameObjectWithTag("Camera Bounds").GetComponent<sideScrollLimiter>();
+        trail = GetComponent<TrailRenderer>();
         isDead = false;
         movingRight = false;
         sprintScale = 1;
@@ -111,13 +113,15 @@ public class characterController : MonoBehaviour
         if(canMove)
         {
             rb.velocity = new Vector2((moveSpeed * sprintScale) * xinput, rb.velocity.y);
-            if(Input.GetKeyDown(KeyCode.LeftShift) && power.fireFlowerEquipped == false || Input.GetKeyDown(KeyCode.RightShift) && power.fireFlowerEquipped == false || Input.GetKeyDown(KeyCode.Z) && power.fireFlowerEquipped == false)
+            if(Input.GetKeyDown(KeyCode.LeftShift) && power.fireFlowerEquipped == false && isGrounded || Input.GetKeyDown(KeyCode.RightShift) && power.fireFlowerEquipped == false && isGrounded || Input.GetKeyDown(KeyCode.Z) && power.fireFlowerEquipped == false && isGrounded)
             {
                 sprintScale = 1.5f;
+                trail.time = .25f;
             }
             else if(Input.GetKeyUp(KeyCode.LeftShift)|| Input.GetKeyUp(KeyCode.RightShift) || Input.GetKeyUp(KeyCode.Z))
             {
-                sprintScale = 1;              
+                sprintScale = 1;
+                trail.time = 0f;              
             }
 
             if(Input.GetKeyDown(KeyCode.Space) && isGrounded || Input.GetKeyDown(KeyCode.X) && isGrounded)
@@ -177,7 +181,7 @@ public class characterController : MonoBehaviour
             underCheck.collider.gameObject.SetActive(false);
         }
         
-        RaycastHit2D rayDown = Physics2D.BoxCast(groundChecker.position, new Vector2(.2f,.2f), 0f, -transform.up, .25f, enemyLayer);
+        RaycastHit2D rayDown = Physics2D.BoxCast(groundChecker.position, new Vector2(.75f,.2f), 0f, -transform.up, .35f, enemyLayer);
         if(rayDown.collider != null && !isDead)
         {
             Destroy(rayDown.collider.gameObject);
@@ -201,6 +205,27 @@ public class characterController : MonoBehaviour
         }
     }
     public void die()
+    {
+        if(!isDead)
+        {
+            canMove = false;
+            isDead = true;
+            rb.velocity = new Vector2(0,0);
+            GetComponent<BoxCollider2D>().isTrigger = true;
+            rb.AddForce(transform.up * jumpPower/1.5f, ForceMode2D.Impulse);
+            anim.SetBool("isDead", true);
+            manager.loseLife(1);
+            if(gameManager.lives>0)
+            {
+                manager.StartCoroutine("resetLevel");
+            }
+            else if (gameManager.lives<=0)
+            {
+                manager.StartCoroutine("gameOver");
+            } 
+        }
+    }
+    public void dieHazard()
     {
         if(!isDead)
         {
@@ -244,7 +269,7 @@ public class characterController : MonoBehaviour
         }
         if(hit.CompareTag("Death Hazard"))
         {
-            die();
+            dieHazard();
         }
     }
     void OnDrawGizmos()

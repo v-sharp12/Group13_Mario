@@ -17,7 +17,8 @@ public class pickupCoin : MonoBehaviour
             gameManager.addScore(200);
             gameManager.addCoin(1);
             AudioSource.PlayClipAtPoint(coinPickup, transform.position, 1f);
-            Destroy(this.gameObject);
+            this.gameObject.SetActive(false);
+            //Destroy(this.gameObject);
         }
     }
 }
