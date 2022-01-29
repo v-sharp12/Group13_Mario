@@ -67,7 +67,8 @@ public class characterController : MonoBehaviour
         sprintScale = 1;
         canMove = true;
         travelRight = false;
-        GetComponent<BoxCollider2D>().isTrigger = false;
+        power.bigBox.isTrigger = false;
+        power.smallBox.isTrigger = false;
         if(gameManager.checkpointPassed == true)
         {
             transform.position = checkpointTransform.position;
@@ -91,6 +92,10 @@ public class characterController : MonoBehaviour
         {
             anim.SetBool("isMoving", false);
         }
+        if(isGrounded)
+        rb.AddForce(transform.up, ForceMode2D.Force);
+        else if(!isGrounded)
+        rb.AddForce(-transform.up, ForceMode2D.Force);
     }
     void isOnGround()
     {
@@ -184,7 +189,8 @@ public class characterController : MonoBehaviour
         RaycastHit2D rayDown = Physics2D.BoxCast(groundChecker.position, new Vector2(.75f,.2f), 0f, -transform.up, .35f, enemyLayer);
         if(rayDown.collider != null && !isDead)
         {
-            Destroy(rayDown.collider.gameObject);
+            //Destroy(rayDown.collider.gameObject);
+            rayDown.collider.gameObject.SetActive(false);            
             AudioSource.PlayClipAtPoint(coinSound, transform.position, .75f);
             manager.addScore(100);
             rb.AddForce(transform.up * (jumpPower * 1.25f), ForceMode2D.Impulse);
@@ -211,7 +217,8 @@ public class characterController : MonoBehaviour
             canMove = false;
             isDead = true;
             rb.velocity = new Vector2(0,0);
-            GetComponent<BoxCollider2D>().isTrigger = true;
+            power.bigBox.isTrigger = true;
+            power.smallBox.isTrigger = true;
             rb.AddForce(transform.up * jumpPower/1.5f, ForceMode2D.Impulse);
             anim.SetBool("isDead", true);
             manager.loseLife(1);

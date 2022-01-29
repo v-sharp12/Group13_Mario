@@ -22,6 +22,8 @@ public class powerController : MonoBehaviour
     [Header("Mushroom Variables")]
     public bool bigMushroomEquipped;
     public float mushTimer;
+    public BoxCollider2D bigBox;
+    public BoxCollider2D smallBox;
     
     [Header("Starman Variables")]
     public bool starManEquipped;
@@ -40,6 +42,7 @@ public class powerController : MonoBehaviour
     {
         shootFireball();
         starMan();
+        bigShroom();
     }
     public void shootFireball()
     {
@@ -60,10 +63,12 @@ public class powerController : MonoBehaviour
         if(fireFlowerEquipped)
         {
             fireTimer -= Time.deltaTime;
+            player.anim.SetFloat("fireFloat", 1f);
         }
         else if(!fireFlowerEquipped)
         {
             fireTimer = powDuration;
+            player.anim.SetFloat("fireFloat", 0f);
         }
         if(fireTimer<=0)
         {
@@ -93,20 +98,109 @@ public class powerController : MonoBehaviour
             starManEquipped = false;
         }  
     }
+    public void bigShroom()
+    {
+        if(bigMushroomEquipped)
+        {
+            mushTimer -= Time.deltaTime;
+            //if(!starParticle.isPlaying)
+            //starParticle.Play();
+        }
+        else if(!bigMushroomEquipped)
+        {
+            mushTimer = powDuration;
+            bigBox.enabled = false;          
+            //starParticle.Stop();
+        }        
+        if(mushTimer<=0)
+        {
+            //bigMushroomEquipped = false;
+            if(bigMushroomEquipped)
+            {
+                StartCoroutine("loseShroom");              
+            }
+
+            //bigBox.enabled = false;
+            //player.anim.SetBool("bigShroom", false);
+        }
+        
+        RaycastHit2D brickRay = Physics2D.BoxCast(player.headPoint.position, new Vector2(.75f,.2f), 0f, transform.up, 1f, player.brickLayer);
+        if (brickRay.collider != null)
+        {
+            if(bigMushroomEquipped)
+            {
+                player.rb.AddForce(-transform.up * (player.jumpPower/5), ForceMode2D.Impulse);
+                player.manager.addScore(50);
+                Destroy(brickRay.collider.gameObject);
+            }
+        }
+    }
 
     public IEnumerator getPowerup()
     {
+        Time.timeScale = 0f;
         player.sprite.color = baseColor;
-        yield return new WaitForSecondsRealtime(0.1f);
+        yield return new WaitForSecondsRealtime(0.2f);
         player.sprite.color = secColor;
-        yield return new WaitForSecondsRealtime(0.1f);
+        yield return new WaitForSecondsRealtime(0.2f);
         player.sprite.color = baseColor;
-        yield return new WaitForSecondsRealtime(0.1f);
+        yield return new WaitForSecondsRealtime(0.2f);
         player.sprite.color = secColor;
-        yield return new WaitForSecondsRealtime(0.1f);
+        yield return new WaitForSecondsRealtime(0.2f);
         player.sprite.color = baseColor;
-        yield return new WaitForSecondsRealtime(0.1f);
+        yield return new WaitForSecondsRealtime(0.2f);
         player.sprite.color = secColor;
-        yield return new WaitForSecondsRealtime(0.1f);
+        yield return new WaitForSecondsRealtime(0.2f);
+        player.sprite.color = baseColor;
+        Time.timeScale = 1f;
+    }
+        public IEnumerator getShroom()
+    {
+        Time.timeScale = 0f;
+        player.anim.Play("Big_Idle");
+        yield return new WaitForSecondsRealtime(0.2f);
+        player.anim.Play("Naruto_Idle");
+        yield return new WaitForSecondsRealtime(0.2f);
+        player.anim.Play("Big_Idle");
+        yield return new WaitForSecondsRealtime(0.2f);
+        player.anim.Play("Naruto_Idle");
+        yield return new WaitForSecondsRealtime(0.2f);
+        player.anim.Play("Big_Idle");
+        yield return new WaitForSecondsRealtime(0.2f);
+        player.anim.Play("Naruto_Idle");
+        yield return new WaitForSecondsRealtime(0.2f);  
+        player.anim.Play("Big_Idle");
+        yield return new WaitForSecondsRealtime(0.2f);
+        
+        bigBox.enabled = true;
+        smallBox.enabled = false;
+        player.anim.SetBool("bigShroom", true);
+        player.anim.Play("Big Idle Blend");       
+        Time.timeScale = 1f;
+    }
+    public IEnumerator loseShroom()
+    {
+        bigMushroomEquipped = false;
+        Time.timeScale = 0f;
+        player.anim.Play("Big_Idle");
+        yield return new WaitForSecondsRealtime(0.2f);
+        player.anim.Play("Naruto_Idle");
+        yield return new WaitForSecondsRealtime(0.2f);
+        player.anim.Play("Big_Idle");
+        yield return new WaitForSecondsRealtime(0.2f);
+        player.anim.Play("Naruto_Idle");
+        yield return new WaitForSecondsRealtime(0.2f);
+        player.anim.Play("Big_Idle");
+        yield return new WaitForSecondsRealtime(0.2f);
+        player.anim.Play("Naruto_Idle");
+        yield return new WaitForSecondsRealtime(0.2f);  
+        player.anim.Play("Big_Idle");
+        yield return new WaitForSecondsRealtime(0.2f);
+        
+        bigBox.enabled = false;
+        smallBox.enabled = true;
+        player.anim.SetBool("bigShroom", false);
+        player.anim.Play("Naruto_Idle");        
+        Time.timeScale = 1f;
     }
 }

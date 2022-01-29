@@ -5075,13 +5075,14 @@ MonoBehaviour:
     m_Bits: 256
   groundLayer:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 3080
   leftFire: {fileID: 0}
   rightFire: {fileID: 0}
   upFire: {fileID: 0}
   downFire: {fileID: 0}
   player: {fileID: 0}
   powerupControl: {fileID: 0}
+  manager: {fileID: 0}
   gainLifeText: {fileID: 6965649414613889663, guid: 5e869666de8766947b4c17c47eb81e56, type: 3}
   goingRight: 0
   isGrounded: 0
