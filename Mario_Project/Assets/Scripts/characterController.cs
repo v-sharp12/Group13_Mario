@@ -24,6 +24,7 @@ public class characterController : MonoBehaviour
     [Header("Audio")]
     public AudioClip jumpSound;
     public AudioClip coinSound;
+
     
     [Header("Layer Masks")]
     public LayerMask groundLayer;
@@ -78,12 +79,21 @@ public class characterController : MonoBehaviour
     void Update()
     {
         xinput = Input.GetAxis("Horizontal");
-        isOnGround();          
-        move();   
+        Jump();
         fireRay();        
         playerFlip();
         win();
         currentSpeed = rb.velocity.x;
+
+        if(Input.GetKeyDown(KeyCode.LeftShift) && power.fireFlowerEquipped == false && isGrounded || Input.GetKeyDown(KeyCode.RightShift) && power.fireFlowerEquipped == false && isGrounded || Input.GetKeyDown(KeyCode.Z) && power.fireFlowerEquipped == false && isGrounded)
+        {
+            sprintScale = 1.5f;
+        }
+        else if(Input.GetKeyUp(KeyCode.LeftShift)|| Input.GetKeyUp(KeyCode.RightShift) || Input.GetKeyUp(KeyCode.Z))
+        {
+            sprintScale = 1;             
+        }
+
         if(xinput > 0.1f && isGrounded || xinput < -0.1f && isGrounded)
         {
             anim.SetBool("isMoving", true);
@@ -96,6 +106,15 @@ public class characterController : MonoBehaviour
         rb.AddForce(transform.up, ForceMode2D.Force);
         else if(!isGrounded)
         rb.AddForce(-transform.up, ForceMode2D.Force);
+    }
+    void FixedUpdate()
+    {
+        move();
+        isOnGround();
+        if(isGrounded)
+        rb.AddForce((transform.up * 1f), ForceMode2D.Force);
+        else if(!isGrounded)
+        rb.AddForce((-transform.up * 25f), ForceMode2D.Force);
     }
     void isOnGround()
     {
@@ -117,33 +136,31 @@ public class characterController : MonoBehaviour
     {
         if(canMove)
         {
-            rb.velocity = new Vector2((moveSpeed * sprintScale) * xinput, rb.velocity.y);
-            if(Input.GetKeyDown(KeyCode.LeftShift) && power.fireFlowerEquipped == false && isGrounded || Input.GetKeyDown(KeyCode.RightShift) && power.fireFlowerEquipped == false && isGrounded || Input.GetKeyDown(KeyCode.Z) && power.fireFlowerEquipped == false && isGrounded)
-            {
-                sprintScale = 1.5f;
-                trail.time = .25f;
-            }
-            else if(Input.GetKeyUp(KeyCode.LeftShift)|| Input.GetKeyUp(KeyCode.RightShift) || Input.GetKeyUp(KeyCode.Z))
-            {
-                sprintScale = 1;
-                trail.time = 0f;              
-            }
+            rb.velocity = new Vector2(xinput * (moveSpeed * sprintScale) * Time.deltaTime, rb.velocity.y);
 
             if(Input.GetKeyDown(KeyCode.Space) && isGrounded || Input.GetKeyDown(KeyCode.X) && isGrounded)
             {
-                rb.AddForce(transform.up * jumpPower, ForceMode2D.Impulse);
-                AudioSource.PlayClipAtPoint(jumpSound, transform.position, .2f);
+                //rb.velocity = new Vector2(rb.velocity.x, jumpPower);
+                //AudioSource.PlayClipAtPoint(jumpSound, transform.position, .2f);                
             }
 
             if(xinput > .01f && rb.velocity.x > 0.1f && facingRight)
             {
                 movingRight = true;
             }
-
             else if (facingRight != true || rb.velocity.x <= 0.1f)
             {
                 movingRight = false;
             }            
+        }
+    }
+    public void Jump()
+    {
+        if(canMove)
+        if(Input.GetKeyDown(KeyCode.Space) && isGrounded || Input.GetKeyDown(KeyCode.X) && isGrounded)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpPower);
+            AudioSource.PlayClipAtPoint(jumpSound, transform.position, .2f);
         }
     }
     public void fireRay()
@@ -174,7 +191,7 @@ public class characterController : MonoBehaviour
         {
             if(power.bigMushroomEquipped)
             {
-                rb.AddForce(-transform.up * (jumpPower/5), ForceMode2D.Impulse);
+                rb.velocity = new Vector2(rb.velocity.x, -jumpPower/4);
                 Destroy(brickCollider.gameObject);
             }
         }
@@ -190,10 +207,17 @@ public class characterController : MonoBehaviour
         if(rayDown.collider != null && !isDead)
         {
             //Destroy(rayDown.collider.gameObject);
-            rayDown.collider.gameObject.SetActive(false);            
-            AudioSource.PlayClipAtPoint(coinSound, transform.position, .75f);
-            manager.addScore(100);
-            rb.AddForce(transform.up * (jumpPower * 1.25f), ForceMode2D.Impulse);
+            //rayDown.collider.gameObject.SetActive(false);
+            
+            goomba goo = rayDown.collider.GetComponent<goomba>();
+            if(goo.dead == false)
+            {
+                manager.addScore(100);
+                AudioSource.PlayClipAtPoint(coinSound, transform.position, .75f);                 
+            }
+            goo.StartCoroutine("die");           
+            rb.velocity = new Vector2(rb.velocity.x, jumpPower/2f);
+            //rb.AddForce(transform.up * (jumpPower * 1.25f) * Time.deltaTime, ForceMode2D.Impulse);
         }
     }    
 
@@ -219,7 +243,8 @@ public class characterController : MonoBehaviour
             rb.velocity = new Vector2(0,0);
             power.bigBox.isTrigger = true;
             power.smallBox.isTrigger = true;
-            rb.AddForce(transform.up * jumpPower/1.5f, ForceMode2D.Impulse);
+            rb.velocity = new Vector2(rb.velocity.x, jumpPower/2);
+            //rb.AddForce(transform.up * jumpPower/2f * Time.deltaTime, ForceMode2D.Impulse);
             anim.SetBool("isDead", true);
             manager.loseLife(1);
             if(gameManager.lives>0)
@@ -240,7 +265,7 @@ public class characterController : MonoBehaviour
             isDead = true;
             rb.velocity = new Vector2(0,0);
             GetComponent<BoxCollider2D>().isTrigger = true;
-            rb.AddForce(transform.up * jumpPower/1.5f, ForceMode2D.Impulse);
+            rb.AddForce(transform.up * jumpPower/1.5f * Time.deltaTime, ForceMode2D.Impulse);
             anim.SetBool("isDead", true);
             manager.loseLife(1);
             if(gameManager.lives>0)
@@ -257,7 +282,7 @@ public class characterController : MonoBehaviour
     {
         if(travelRight)
         {
-            rb.velocity = new Vector2(1 * moveSpeed/3f, rb.velocity.y);
+            rb.velocity = new Vector2(1 * moveSpeed/3f * Time.deltaTime, rb.velocity.y);
             anim.SetBool("levelWin", true);
         }
         

@@ -6,6 +6,7 @@ public class tele : MonoBehaviour
 {
     public Transform spawn;
     public GameObject player;
+    public GameObject blk;
     public characterController playerController;
     public sideScrollLimiter limiter;
     void Start()
@@ -13,6 +14,8 @@ public class tele : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<characterController>();
         limiter = GameObject.FindGameObjectWithTag("Camera Bounds").GetComponent<sideScrollLimiter>();
+        //blk = GameObject.Find("OverBG");
+        blk.SetActive(false);
     }
 
     // Update is called once per frame
@@ -24,6 +27,7 @@ public class tele : MonoBehaviour
     {
         if(hit.CompareTag("Player"))
         {
+            blk.SetActive(true);
             player.transform.position = spawn.transform.position;
             limiter.goUnderground();
             limiter.setpos();

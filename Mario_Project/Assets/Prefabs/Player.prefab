@@ -4936,7 +4936,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &7174627695794356294
 BoxCollider2D:
@@ -4993,7 +4993,7 @@ MonoBehaviour:
   coinSound: {fileID: 8300000, guid: 5026c74c623895944a2bf811814834f8, type: 3}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 16392
+    m_Bits: 49160
   brickLayer:
     serializedVersion: 2
     m_Bits: 2048
@@ -5011,12 +5011,12 @@ MonoBehaviour:
     m_Bits: 8192
   pipeLayer:
     serializedVersion: 2
-    m_Bits: 0
-  moveSpeed: 6
-  jumpPower: 17.5
+    m_Bits: 32768
+  moveSpeed: 350
+  jumpPower: 21.5
   checkGroundRadius: 0.1
   currentSpeed: 0
-  sprintScale: 0
+  sprintScale: 1
   canMove: 0
   isFlipped: 0
   isGrounded: 0
@@ -5064,9 +5064,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   fireballProjectile: {fileID: 2360531974601085490, guid: 6e803a9e8a4b2e74888a674cc3dcd4cd, type: 3}
-  baseColor: {r: 0, g: 0, b: 0, a: 0}
-  secColor: {r: 0, g: 0, b: 0, a: 0}
+  baseColor: {r: 1, g: 1, b: 1, a: 1}
+  secColor: {r: 0.5911949, g: 1, b: 0.77830327, a: 1}
   powDuration: 10
+  lilBeep: {fileID: 8300000, guid: faeb884ad4db38b4e8c24c3c998e3287, type: 3}
   fireFlowerEquipped: 0
   fireTimer: 0
   maxFireballsfired: 10
@@ -5075,7 +5076,7 @@ MonoBehaviour:
   bigMushroomEquipped: 0
   mushTimer: 0
   bigBox: {fileID: 5085442108563829446}
-  smallBox: {fileID: 0}
+  smallBox: {fileID: 7174627695794356294}
   starManEquipped: 0
   starTimer: 0
   starParticle: {fileID: 0}

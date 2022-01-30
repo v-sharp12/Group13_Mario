@@ -6,6 +6,7 @@ public class teleOverWorld : MonoBehaviour
 {
     public Transform spawn;
     public GameObject player;
+    public GameObject blk;
     public characterController playerController;
     public sideScrollLimiter limiter;
     public LayerMask playerLayer;
@@ -14,6 +15,7 @@ public class teleOverWorld : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<characterController>();
         limiter = GameObject.FindGameObjectWithTag("Camera Bounds").GetComponent<sideScrollLimiter>();
+        //blk = GameObject.Find("OverBG").GetComponent<GameObject>();
     }
     void Update()
     {
@@ -28,6 +30,7 @@ public class teleOverWorld : MonoBehaviour
         RaycastHit2D playercheck = Physics2D.Raycast(transform.position, -transform.right, .5f, playerLayer);
         if(playercheck.collider != null && Input.GetKeyDown(KeyCode.RightArrow) ||playercheck.collider != null && Input.GetKeyDown(KeyCode.D))
         {
+            blk.SetActive(false);
             player.transform.position = spawn.transform.position;
             limiter.goAbove();
             limiter.setpos();

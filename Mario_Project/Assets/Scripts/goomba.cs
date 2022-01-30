@@ -15,6 +15,8 @@ public class goomba : MonoBehaviour
     public powerController powerupControl;
     public bool goingRight;
     public bool startMoving;
+    public bool dead;
+    public bool isGrounded;
     public float speed;
     void Start()
     {
@@ -29,10 +31,15 @@ public class goomba : MonoBehaviour
     }
     void Update()
     {
+        isOnGround();
         if(Vector3.Distance(transform.position, playerGameObject.transform.position) < 15)
         {
             startMoving = true;
         }
+        fireRay();
+    }
+    void FixedUpdate()
+    {
         if(startMoving)
         {
             if(goingRight)
@@ -44,17 +51,20 @@ public class goomba : MonoBehaviour
                 rb.velocity = new Vector2(-speed, rb.velocity.y);
             }            
         }
-        fireRay();
+        if(isGrounded)
+        rb.AddForce(transform.up, ForceMode2D.Force);
+        else if(!isGrounded)
+        rb.AddForce(-transform.up, ForceMode2D.Force);
     }
     public void fireRay()
     {
-        RaycastHit2D boundsCheck = Physics2D.Raycast(leftFire.position, -transform.right, .5f, boundsLayer);
+        RaycastHit2D boundsCheck = Physics2D.Raycast(leftFire.position, -transform.right, .25f, boundsLayer);
         if(boundsCheck.collider != null)
         {
             Destroy(this.gameObject);
         }
-        RaycastHit2D rayLeft = Physics2D.Raycast(leftFire.position, -transform.right, .5f, obstacleLayer);
-        RaycastHit2D rayRight = Physics2D.Raycast(rightFire.position, transform.right, .5f, obstacleLayer);                
+        RaycastHit2D rayLeft = Physics2D.Raycast(leftFire.position, -transform.right, .25f, obstacleLayer);
+        RaycastHit2D rayRight = Physics2D.Raycast(rightFire.position, transform.right, .25f, obstacleLayer);                
         if(rayLeft.collider != null)
         {
             goingRight = true;
@@ -63,8 +73,10 @@ public class goomba : MonoBehaviour
         {
             goingRight = false;
         }
-        RaycastHit2D playerLeft = Physics2D.Raycast(leftFire.position, -transform.right, .5f, playerLayer);
-        RaycastHit2D playerRight = Physics2D.Raycast(rightFire.position, transform.right, .5f, playerLayer);        
+        RaycastHit2D playerLeft = Physics2D.Raycast(leftFire.position, -transform.right, .25f, playerLayer);
+        RaycastHit2D playerRight = Physics2D.Raycast(rightFire.position, transform.right, .25f, playerLayer);
+        RaycastHit2D playerDown = Physics2D.Raycast(transform.position, transform.right, .75f, playerLayer);
+
         if(playerLeft.collider != null && powerupControl.starManEquipped == false)
         {
             if(player.isDead == false)
@@ -77,14 +89,15 @@ public class goomba : MonoBehaviour
         {
             if(player.isDead == false)
             {
-                Destroy(this.gameObject);
-                AudioSource.PlayClipAtPoint(player.coinSound, transform.position, .75f);
-                player.manager.addScore(100);            
+                //Destroy(this.gameObject);
+                player.manager.addScore(100);                   
+                StartCoroutine("die");
+                AudioSource.PlayClipAtPoint(player.coinSound, transform.position, .75f);          
             }
         }
         else if(playerRight.collider != null && powerupControl.starManEquipped == false)
         {
-            if(player.isDead == false)
+            if(player.isDead == false && !dead)
             {
                 player.die();                   
                 player.isDead = true;
@@ -94,10 +107,55 @@ public class goomba : MonoBehaviour
         {
             if(player.isDead == false)
             {
-                Destroy(this.gameObject);
-                AudioSource.PlayClipAtPoint(player.coinSound, transform.position, .75f);
-                player.manager.addScore(100);             
+                //Destroy(this.gameObject);
+                player.manager.addScore(100);                   
+                StartCoroutine("die");
+                AudioSource.PlayClipAtPoint(player.coinSound, transform.position, .75f);            
             }
+        }
+        
+        if(!dead)
+        {
+            if(playerDown.collider != null && powerupControl.starManEquipped == false)
+            {
+            if(player.isDead == false && !dead)
+            {
+                player.die();                   
+                player.isDead = true;
+            }
+            }
+        
+            else if(playerDown.collider != null && powerupControl.starManEquipped)
+            {
+            if(player.isDead == false)
+            {
+                //Destroy(this.gameObject);
+                player.manager.addScore(100);                   
+                StartCoroutine("die");
+                AudioSource.PlayClipAtPoint(player.coinSound, transform.position, .75f);
+            }
+            }            
+        }
+    }
+    public IEnumerator die()
+    {
+        dead = true;
+        rb.velocity = new Vector2(0,0);
+        GetComponent<BoxCollider2D>().enabled = false;
+        rb.velocity = new Vector2(0, 5f);
+        this.gameObject.SetActive(false);
+        yield return new WaitForSeconds(0f);        
+    }
+    void isOnGround()
+    {
+        Collider2D collider = Physics2D.OverlapCircle(transform.position, .3f, obstacleLayer);
+        if (collider != null)
+        {
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
         }
     }
     void OnCollisionEnter2D(Collision2D col)
