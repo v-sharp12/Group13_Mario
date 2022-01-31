@@ -72,8 +72,8 @@ public class powerController : MonoBehaviour
         }
         if(fireTimer<=0)
         {
-            fireFlowerEquipped = false;
-            player.anim.SetFloat("fireFloat", 0f);
+            //fireFlowerEquipped = false;
+            //player.anim.SetFloat("fireFloat", 0f);
         }  
         else if (currFireballsFired>=maxFireballsfired)
         {
@@ -106,14 +106,14 @@ public class powerController : MonoBehaviour
     {
         if(bigMushroomEquipped)
         {
-            mushTimer -= Time.deltaTime;
+            //mushTimer -= Time.deltaTime;
             //if(!starParticle.isPlaying)
             //starParticle.Play();
         }
         else if(!bigMushroomEquipped)
         {
-            mushTimer = powDuration;
-            bigBox.enabled = false;          
+            //mushTimer = powDuration;
+            //bigBox.enabled = false;          
             //starParticle.Stop();
         }        
         if(mushTimer<=0)
@@ -123,7 +123,6 @@ public class powerController : MonoBehaviour
             {
                 StartCoroutine("loseShroom");              
             }
-
             //bigBox.enabled = false;
             //player.anim.SetBool("bigShroom", false);
         }
