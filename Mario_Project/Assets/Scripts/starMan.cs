@@ -82,8 +82,8 @@ public class starMan : MonoBehaviour
         RaycastHit2D playerRight = Physics2D.Raycast(rightFire.position, transform.right, .5f, playerLayer);
         RaycastHit2D playerUp = Physics2D.Raycast(upFire.position, transform.up, .5f, playerLayer);
         RaycastHit2D playerDown = Physics2D.Raycast(downFire.position, -transform.up, .5f, playerLayer);*/
-        RaycastHit2D playerLeft = Physics2D.BoxCast(leftFire.position, new Vector2(.5f, .1f), 0f, -transform.right, .35f, playerLayer);
-        RaycastHit2D playerRight = Physics2D.BoxCast(rightFire.position, new Vector2(.5f, .1f), 0f, transform.right, .35f, playerLayer);
+        RaycastHit2D playerLeft = Physics2D.BoxCast(leftFire.position, new Vector2(.1f, .5f), 0f, -transform.right, .35f, playerLayer);
+        RaycastHit2D playerRight = Physics2D.BoxCast(rightFire.position, new Vector2(.1f, .5f), 0f, transform.right, .35f, playerLayer);
         RaycastHit2D playerUp = Physics2D.BoxCast(upFire.position, new Vector2(.5f, .1f), 0f, transform.up, .35f, playerLayer);
         RaycastHit2D playerDown = Physics2D.BoxCast(downFire.position, new Vector2(.5f, .1f), 0f, -transform.up, .35f, playerLayer);
         if(playerLeft.collider != null)

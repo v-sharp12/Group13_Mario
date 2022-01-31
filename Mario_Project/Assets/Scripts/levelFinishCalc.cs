@@ -23,6 +23,7 @@ public class levelFinishCalc : MonoBehaviour
     public void detectFinish()
     {
         RaycastHit2D detectLevelFinish = Physics2D.Raycast(groundChecker.position, -transform.up, .5f, finishLayer);
+        RaycastHit2D detectLevelFinishTwo = Physics2D.Raycast(player.firePoint.position, transform.right, .5f, finishLayer);
         if (detectLevelFinish.collider != null)
         {
             if(detectLevelFinish.collider.tag == ("highScore") && checkForFinish)
@@ -45,9 +46,11 @@ public class levelFinishCalc : MonoBehaviour
                 manager.addScore(500);
                 manager.StartCoroutine("finishLevel");
             }
-            else if(detectLevelFinish.collider.tag == ("lowScore") && checkForFinish)
+        }
+        if (detectLevelFinishTwo.collider != null)
+            if(detectLevelFinishTwo.collider.tag == ("lowScore") && checkForFinish)
             {
-                Debug.Log(""+ detectLevelFinish.collider.name);
+                Debug.Log(""+ detectLevelFinishTwo.collider.name);
                 checkForFinish = false;
                 player.canMove = false;
                 player.rb.velocity= new Vector2(0,player.rb.velocity.y);
@@ -56,5 +59,4 @@ public class levelFinishCalc : MonoBehaviour
                 manager.StartCoroutine("finishLevel");
             }
         }
-    }
 }

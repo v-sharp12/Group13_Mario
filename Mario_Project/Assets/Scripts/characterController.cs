@@ -41,7 +41,8 @@ public class characterController : MonoBehaviour
     public float checkGroundRadius;
     public float currentSpeed;
     public float sprintScale;
-    
+    public Color full;
+    public Color flikr;
     [Header("Movement Constraints")]
     public bool canMove;
     public bool isFlipped;
@@ -50,6 +51,7 @@ public class characterController : MonoBehaviour
     public bool facingRight = true;
     public bool movingRight;
     public bool travelRight;
+    public bool isImmune;
 
     void Start()
     {
@@ -79,6 +81,7 @@ public class characterController : MonoBehaviour
     void Update()
     {
         xinput = Input.GetAxis("Horizontal");
+        Debug.Log(""+Input.GetAxis("Horizontal"));
         Jump();
         fireRay();        
         playerFlip();
@@ -102,18 +105,14 @@ public class characterController : MonoBehaviour
         {
             anim.SetBool("isMoving", false);
         }
-        if(isGrounded)
-        rb.AddForce(transform.up, ForceMode2D.Force);
-        else if(!isGrounded)
-        rb.AddForce(-transform.up, ForceMode2D.Force);
     }
     void FixedUpdate()
     {
         move();
         isOnGround();
         if(isGrounded)
-        rb.AddForce((transform.up * 1f), ForceMode2D.Force);
-        else if(!isGrounded)
+        rb.AddForce((transform.up * 10f), ForceMode2D.Force);
+        if(!isGrounded)
         rb.AddForce((-transform.up * 25f), ForceMode2D.Force);
     }
     void isOnGround()
@@ -171,10 +170,10 @@ public class characterController : MonoBehaviour
             rb.AddForce(-transform.up * (jumpPower/5), ForceMode2D.Impulse);
         }
 
-        Collider2D itemCollider = Physics2D.OverlapCircle(headPoint.position, checkGroundRadius, itemBlockLayer);
-        if (itemCollider != null )
+        RaycastHit2D itemCollider = Physics2D.BoxCast(headPoint.position, new Vector2(0.4f,0.1f), 0f, transform.up,checkGroundRadius, itemBlockLayer);
+        if (itemCollider.collider != null )
         {
-            itemBlock block = itemCollider.gameObject.GetComponent<itemBlock>();
+            itemBlock block = itemCollider.collider.gameObject.GetComponent<itemBlock>();
             block.spawnItem();
         }
 
@@ -204,11 +203,8 @@ public class characterController : MonoBehaviour
         }
         
         RaycastHit2D rayDown = Physics2D.BoxCast(groundChecker.position, new Vector2(.75f,.2f), 0f, -transform.up, .35f, enemyLayer);
-        if(rayDown.collider != null && !isDead)
+        if(rayDown.collider != null && !isDead && !isImmune)
         {
-            //Destroy(rayDown.collider.gameObject);
-            //rayDown.collider.gameObject.SetActive(false);
-            
             goomba goo = rayDown.collider.GetComponent<goomba>();
             if(goo.dead == false)
             {
@@ -217,18 +213,17 @@ public class characterController : MonoBehaviour
             }
             goo.StartCoroutine("die");           
             rb.velocity = new Vector2(rb.velocity.x, jumpPower/2f);
-            //rb.AddForce(transform.up * (jumpPower * 1.25f) * Time.deltaTime, ForceMode2D.Impulse);
         }
     }    
 
     public void playerFlip() 
     {
-        if (rb.velocity.x > 0 && !facingRight)
+        if (rb.velocity.x > 0 && !facingRight && xinput > 0)
         {
             facingRight = !facingRight;
             transform.Rotate(0f, 180f, 0f);
         }
-        else if (rb.velocity.x < 0 && facingRight)
+        else if (rb.velocity.x < 0 && facingRight && xinput < 0)
         {
             facingRight = !facingRight;
             transform.Rotate(0f, 180f, 0f);
@@ -244,7 +239,6 @@ public class characterController : MonoBehaviour
             power.bigBox.isTrigger = true;
             power.smallBox.isTrigger = true;
             rb.velocity = new Vector2(rb.velocity.x, jumpPower/2);
-            //rb.AddForce(transform.up * jumpPower/2f * Time.deltaTime, ForceMode2D.Impulse);
             anim.SetBool("isDead", true);
             manager.loseLife(1);
             if(gameManager.lives>0)
@@ -282,7 +276,7 @@ public class characterController : MonoBehaviour
     {
         if(travelRight)
         {
-            rb.velocity = new Vector2(1 * moveSpeed/3f * Time.deltaTime, rb.velocity.y);
+            rb.velocity = new Vector2(1 * moveSpeed/2.5f * Time.deltaTime, rb.velocity.y);
             anim.SetBool("levelWin", true);
         }
         
@@ -290,7 +284,6 @@ public class characterController : MonoBehaviour
         if(touchingPlatform.collider != null && travelRight)
         {
             rb.AddForce(transform.up * (jumpPower / 100f), ForceMode2D.Impulse);
-            //AudioSource.PlayClipAtPoint(jumpSound, transform.position, .2f);
         }
     }
     void OnTriggerEnter2D(Collider2D hit)
@@ -304,6 +297,26 @@ public class characterController : MonoBehaviour
             dieHazard();
         }
     }
+    public IEnumerator losePower()
+    {
+        isImmune = true;        
+        Physics2D.IgnoreLayerCollision(6, 8, true);        
+        yield return new WaitForSecondsRealtime(.6f);
+        sprite.color = flikr;
+        yield return new WaitForSecondsRealtime(0.1f);
+        sprite.color = full;
+        yield return new WaitForSecondsRealtime(0.1f);
+        sprite.color = flikr;
+        yield return new WaitForSecondsRealtime(0.1f);
+        sprite.color = full;
+        yield return new WaitForSecondsRealtime(0.1f);
+        sprite.color = flikr;
+        yield return new WaitForSecondsRealtime(0.1f);
+        sprite.color = full;
+        yield return new WaitForSecondsRealtime(0.1f);
+        Physics2D.IgnoreLayerCollision(6, 8, false);
+        isImmune = false;
+    }
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -313,6 +326,5 @@ public class characterController : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(firePoint.position, new Vector3(.25f,.25f,.25f));
         Gizmos.color = Color.red;
-        //Gizmos.DrawWireCube(groundChecker.position, new Vector3(.25f,.25f,.25f));
     }
 }

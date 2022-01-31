@@ -15,7 +15,7 @@ public class fireball : MonoBehaviour
     
     [Header("Variables")]  
     public float lifeTime;
-    public float lifespan = 5f; // The lenght of time before destroying fireball.
+    public float lifespan = 5f; // The length of time before destroying fireball.
     public float speed;
     private float initalVelocity { get { return calculateInitialVelocity(); } }
     public void Start()
@@ -40,6 +40,7 @@ public class fireball : MonoBehaviour
         lifeTime = lifeTime + Time.deltaTime;
         if(lifeTime>lifespan)
         {
+            powerupControl.instancedFireballs -= 1;
             Destroy(this.gameObject);
         }
     }

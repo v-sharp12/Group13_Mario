@@ -4909,7 +4909,7 @@ GameObject:
   - component: {fileID: 4646084032631292483}
   - component: {fileID: 7177120283875066675}
   m_Layer: 12
-  m_Name: Hyuga Ointment(1up)
+  m_Name: 1up
   m_TagString: Powerup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5042,7 +5042,7 @@ Animator:
   m_GameObject: {fileID: 6446478935446128773}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f0dae5e0f4f47004a95c4baec9fa0677, type: 2}
+  m_Controller: {fileID: 9100000, guid: 3035617521e14de47851023d45f4a857, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

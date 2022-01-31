@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4113130385932713679}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.45, y: -0.15800008, z: 0}
+  m_LocalPosition: {x: 0.45, y: -0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6446478935446128775}
@@ -44,8 +44,9 @@ GameObject:
   - component: {fileID: 6446478935446128776}
   - component: {fileID: 2127855033374056958}
   - component: {fileID: 6653753929588859116}
+  - component: {fileID: 2806655325343216443}
   m_Layer: 6
-  m_Name: Goomba
+  m_Name: Koopa
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64,6 +65,7 @@ Transform:
   m_Children:
   - {fileID: 5218363111960650299}
   - {fileID: 3076702274132435253}
+  - {fileID: 278305937115077944}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -107,9 +109,9 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -9145780748715894314, guid: 4ec53dbcbd7a87a439146d66e1f67ab0, type: 3}
+  m_Sprite: {fileID: -2695465124664192271, guid: 641194e8c5a41e347a5da1038f3d7bc1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
@@ -155,8 +157,8 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.85714287, y: 0.85714287}
+    pivot: {x: 0.5, y: 0.42}
+    oldSize: {x: 0.75, y: 1}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -193,7 +195,7 @@ MonoBehaviour:
   playerGameObject: {fileID: 0}
   powerupControl: {fileID: 0}
   koo: {fileID: 0}
-  isKoopa: 0
+  isKoopa: 1
   goingRight: 0
   startMoving: 0
   dead: 0
@@ -207,7 +209,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6446478935446128773}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: f58d26057aa1f014bb2688af3dafc3e6, type: 2}
   m_CullingMode: 0
@@ -218,6 +220,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2806655325343216443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6446478935446128773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 428e741a6f5876b4583efe113e06c52b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shell: {fileID: 7363970022040298213}
 --- !u!1 &7429122956264096696
 GameObject:
   m_ObjectHideFlags: 0
@@ -242,9 +257,76 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7429122956264096696}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.45, y: -0.158, z: 0}
+  m_LocalPosition: {x: -0.45, y: -0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6446478935446128775}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &3314741445314488517
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 6446478935446128775}
+    m_Modifications:
+    - target: {fileID: 3304777971463386621, guid: d146fafeb9717504da65f4e488d775e4, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3304777971463386621, guid: d146fafeb9717504da65f4e488d775e4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.133
+      objectReference: {fileID: 0}
+    - target: {fileID: 3304777971463386621, guid: d146fafeb9717504da65f4e488d775e4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.039
+      objectReference: {fileID: 0}
+    - target: {fileID: 3304777971463386621, guid: d146fafeb9717504da65f4e488d775e4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3304777971463386621, guid: d146fafeb9717504da65f4e488d775e4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3304777971463386621, guid: d146fafeb9717504da65f4e488d775e4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3304777971463386621, guid: d146fafeb9717504da65f4e488d775e4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3304777971463386621, guid: d146fafeb9717504da65f4e488d775e4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3304777971463386621, guid: d146fafeb9717504da65f4e488d775e4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3304777971463386621, guid: d146fafeb9717504da65f4e488d775e4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3304777971463386621, guid: d146fafeb9717504da65f4e488d775e4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5202291370796665376, guid: d146fafeb9717504da65f4e488d775e4, type: 3}
+      propertyPath: m_Name
+      value: Koopa Shell
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d146fafeb9717504da65f4e488d775e4, type: 3}
+--- !u!1 &7363970022040298213 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5202291370796665376, guid: d146fafeb9717504da65f4e488d775e4, type: 3}
+  m_PrefabInstance: {fileID: 3314741445314488517}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &278305937115077944 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3304777971463386621, guid: d146fafeb9717504da65f4e488d775e4, type: 3}
+  m_PrefabInstance: {fileID: 3314741445314488517}
+  m_PrefabAsset: {fileID: 0}

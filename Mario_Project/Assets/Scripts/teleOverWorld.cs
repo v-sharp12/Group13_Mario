@@ -28,7 +28,7 @@ public class teleOverWorld : MonoBehaviour
     public void goBack()
     {
         RaycastHit2D playercheck = Physics2D.Raycast(transform.position, -transform.right, .5f, playerLayer);
-        if(playercheck.collider != null && Input.GetKeyDown(KeyCode.RightArrow) ||playercheck.collider != null && Input.GetKeyDown(KeyCode.D))
+        if(playercheck.collider != null && Input.GetKey(KeyCode.RightArrow) ||playercheck.collider != null && Input.GetKey(KeyCode.D))
         {
             blk.SetActive(false);
             player.transform.position = spawn.transform.position;

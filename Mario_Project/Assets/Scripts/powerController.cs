@@ -64,20 +64,21 @@ public class powerController : MonoBehaviour
         if(fireFlowerEquipped)
         {
             fireTimer -= Time.deltaTime;
-            player.anim.SetFloat("fireFloat", 1f);
+            player.anim.SetFloat("fireFloat", .5f);
         }
         else if(!fireFlowerEquipped)
         {
             fireTimer = powDuration;
-            player.anim.SetFloat("fireFloat", 0f);
         }
         if(fireTimer<=0)
         {
             fireFlowerEquipped = false;
+            player.anim.SetFloat("fireFloat", 0f);
         }  
         else if (currFireballsFired>=maxFireballsfired)
         {
             fireFlowerEquipped = false;
+            player.anim.SetFloat("fireFloat", 0f);
             currFireballsFired = 0;
         }
     }
@@ -86,17 +87,19 @@ public class powerController : MonoBehaviour
         if(starManEquipped)
         {
             starTimer -= Time.deltaTime;
+            player.anim.SetFloat("fireFloat", 1f);
             if(!starParticle.isPlaying)
             starParticle.Play();
         }
         else if(!starManEquipped)
         {
-            starTimer = powDuration;            
+            starTimer = powDuration;
             starParticle.Stop();
         }        
         if(starTimer<=0)
         {
             starManEquipped = false;
+            player.anim.SetFloat("fireFloat", 0f);
         }  
     }
     public void bigShroom()
@@ -135,6 +138,12 @@ public class powerController : MonoBehaviour
                 Destroy(brickRay.collider.gameObject);
             }
         }
+        RaycastHit2D item = Physics2D.BoxCast(player.headPoint.position, new Vector2(.75f,.2f), 0f, transform.up, 1f, player.itemBlockLayer);
+        if (item.collider != null )
+        {
+            itemBlock block = item.collider.gameObject.GetComponent<itemBlock>();
+            block.spawnItem();
+        }
     }
 
     public IEnumerator getPowerup()
@@ -162,19 +171,19 @@ public class powerController : MonoBehaviour
         player.anim.Play("Big_Idle");
         //AudioSource.PlayClipAtPoint(lilBeep, transform.position, 1f);
         yield return new WaitForSecondsRealtime(0.2f);
-        player.anim.Play("Naruto_Idle");
+        player.anim.Play("Idle_Animation_Blend");
         //AudioSource.PlayClipAtPoint(lilBeep, transform.position, 1f);
         yield return new WaitForSecondsRealtime(0.2f);
         player.anim.Play("Big_Idle");
         //AudioSource.PlayClipAtPoint(lilBeep, transform.position, 1f);
         yield return new WaitForSecondsRealtime(0.2f);
-        player.anim.Play("Naruto_Idle");
+        player.anim.Play("Idle_Animation_Blend");
         //AudioSource.PlayClipAtPoint(lilBeep, transform.position, 1f);
         yield return new WaitForSecondsRealtime(0.2f);
         player.anim.Play("Big_Idle");
         //AudioSource.PlayClipAtPoint(lilBeep, transform.position, 1f);
         yield return new WaitForSecondsRealtime(0.2f);
-        player.anim.Play("Naruto_Idle");
+        player.anim.Play("Idle_Animation_Blend");
         //AudioSource.PlayClipAtPoint(lilBeep, transform.position, 1f);
         yield return new WaitForSecondsRealtime(0.2f);  
         player.anim.Play("Big_Idle");
@@ -194,19 +203,19 @@ public class powerController : MonoBehaviour
         player.anim.Play("Big_Idle");
         //AudioSource.PlayClipAtPoint(lilBeep, transform.position, 1f);
         yield return new WaitForSecondsRealtime(0.2f);
-        player.anim.Play("Naruto_Idle");
+        player.anim.Play("Idle_Animation_Blend");
         //AudioSource.PlayClipAtPoint(lilBeep, transform.position, 1f);
         yield return new WaitForSecondsRealtime(0.2f);
         player.anim.Play("Big_Idle");
         //AudioSource.PlayClipAtPoint(lilBeep, transform.position, 1f);
         yield return new WaitForSecondsRealtime(0.2f);
-        player.anim.Play("Naruto_Idle");
+        player.anim.Play("Idle_Animation_Blend");
         //AudioSource.PlayClipAtPoint(lilBeep, transform.position, 1f);
         yield return new WaitForSecondsRealtime(0.2f);
         player.anim.Play("Big_Idle");
         //AudioSource.PlayClipAtPoint(lilBeep, transform.position, 1f);
         yield return new WaitForSecondsRealtime(0.2f);
-        player.anim.Play("Naruto_Idle");
+        player.anim.Play("Idle_Animation_Blend");
         //AudioSource.PlayClipAtPoint(lilBeep, transform.position, 1f);
         yield return new WaitForSecondsRealtime(0.2f);  
         player.anim.Play("Big_Idle");
@@ -216,7 +225,28 @@ public class powerController : MonoBehaviour
         bigBox.enabled = false;
         smallBox.enabled = true;
         player.anim.SetBool("bigShroom", false);
-        player.anim.Play("Naruto_Idle");        
+        player.anim.Play("Idle_Animation_Blend");        
+        Time.timeScale = 1f;
+    }
+
+        public IEnumerator loseShroomFast()
+    {
+        bigMushroomEquipped = false;
+        Time.timeScale = 0f;
+        player.anim.Play("Big_Idle");
+        //AudioSource.PlayClipAtPoint(lilBeep, transform.position, 1f);
+        yield return new WaitForSecondsRealtime(0.2f);
+        player.anim.Play("Idle_Animation_Blend");
+        //AudioSource.PlayClipAtPoint(lilBeep, transform.position, 1f);
+        yield return new WaitForSecondsRealtime(0.2f);  
+        player.anim.Play("Big_Idle");
+        //AudioSource.PlayClipAtPoint(lilBeep, transform.position, 1f);
+        yield return new WaitForSecondsRealtime(0.2f);
+        
+        bigBox.enabled = false;
+        smallBox.enabled = true;
+        player.anim.SetBool("bigShroom", false);
+        player.anim.Play("Idle_Animation_Blend");        
         Time.timeScale = 1f;
     }
 }
